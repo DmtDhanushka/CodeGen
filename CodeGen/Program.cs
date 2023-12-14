@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+﻿using CodeGen;
+using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
-using System.Threading.Tasks;
+using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 
 namespace HelloWorld;
 
@@ -9,7 +9,7 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Console.WriteLine("=========== GptOnConsole =============");
         IConfigurationRoot configuration = new ConfigurationBuilder()
          .AddJsonFile("appsettings.json")
          .Build();
@@ -25,31 +25,69 @@ internal class Program
             return;
         }
 
-        /*
-         * Example: normally you would place prompt templates in a folder to separate
-         *          C# code from natural language code, but you can also define a semantic
-         *          function inline if you like.
-         */
-
         var builder = new KernelBuilder();
 
         builder.AddAzureOpenAIChatCompletion(
-            openAIDeploymentId,
+            openAIDeploymentId!,
             openAIModelId,
-            openAIEndpoint,
+            openAIEndpoint!,
             openAIKey
             );
 
         var kernel = builder.Build();
 
-        await RunAsync( kernel );
-       
+        string res = await GenerateJoke(kernel);
 
-        
+        var newTemplate = new PolicyTicket()
+        {
+            SoftwareVersion = "v1.0.2",
+            PolicyDetails = new CodeGen.Models.PolicyModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PolicyName = "Name",
+                StartDate = DateTime.Now.AddDays(2),
+            },
+            Joke = new CodeGen.Models.JokeModel
+            {
+                Description = res,
+                Title = "Joke",
+            }
+        };
+        var content = newTemplate.TransformText();
+        File.WriteAllText("policy.html", content);
+
+
+
+    }
+
+    public static async Task<string> GenerateJoke(Kernel kernel)
+    {
+        string promptTemplate = @"
+Write a funny joke based on the following person/event.
+Use your imagination go wild.
+Joke should have less than 50 words.
+{{$input}}
+";
+        var jokeFunction = kernel.CreateFunctionFromPrompt(promptTemplate, new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
+        // Generate code to get user input from key board
+        Console.WriteLine("Enter your joke event/thing here: ");
+        string input = Console.ReadLine();
+
+        FunctionResult result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
+        Console.WriteLine("\nJOKE: " + result.GetValue<string>());
+
+        return result.GetValue<string>() ?? "Empty Joke";
     }
 
     public static async Task RunAsync(Kernel kernel)
     {
+        /*
+            * Example: normally you would place prompt templates in a folder to separate
+            *          C# code from natural language code, but you can also define a semantic
+            *          function inline if you like.
+            */
+
         // Function defined using few-shot design pattern
         string promptTemplate = @"
 Generate a creative reason or excuse for the given event.
@@ -76,5 +114,8 @@ Event: {{$input}}
 
         result = await kernel.InvokeAsync(fixedFunction);
         Console.WriteLine(result.GetValue<string>());
+
     }
+
+
 }
