@@ -1,4 +1,5 @@
 ﻿using CodeGen;
+using CodeGen.Prompts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
@@ -9,33 +10,14 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
-        Console.WriteLine("=========== GptOnConsole =============");
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-         .AddJsonFile("appsettings.json")
-         .Build();
+        var kernel = Init();
 
-        string openAIModelId = configuration["OpenAIModelID"];
-        string openAIDeploymentId = configuration["OpenAIDeploymentName"];
-        string openAIEndpoint = configuration["OpenAIEndpoint"];
-        string openAIKey = configuration["OpenAIKey"];
+        await WriteJokeToHTML(kernel);
 
-        if (openAIModelId == null || openAIKey == null)
-        {
-            Console.WriteLine("OpenAI credentials not found. Skipping example.");
-            return;
-        }
+    }
 
-        var builder = new KernelBuilder();
-
-        builder.AddAzureOpenAIChatCompletion(
-            openAIDeploymentId!,
-            openAIModelId,
-            openAIEndpoint!,
-            openAIKey
-            );
-
-        var kernel = builder.Build();
-
+    public static async Task WriteJokeToHTML(Kernel kernel)
+    {
         string res = await GenerateJoke(kernel);
 
         var newTemplate = new PolicyTicket()
@@ -56,21 +38,14 @@ internal class Program
         };
         var content = newTemplate.TransformText();
         File.WriteAllText("policy.html", content);
-
-
-
     }
 
     public static async Task<string> GenerateJoke(Kernel kernel)
     {
-        string promptTemplate = @"
-Write a funny joke based on the following person/event.
-Use your imagination go wild.
-Joke should have less than 50 words.
-{{$input}}
-";
-        var jokeFunction = kernel.CreateFunctionFromPrompt(promptTemplate, new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
-        // Generate code to get user input from key board
+        KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
+            DefaultPrompts.JokePromptTemplate, 
+            new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
+        // User input from key board
         Console.WriteLine("Enter your joke event/thing here: ");
         string input = Console.ReadLine();
 
@@ -115,6 +90,36 @@ Event: {{$input}}
         result = await kernel.InvokeAsync(fixedFunction);
         Console.WriteLine(result.GetValue<string>());
 
+    }
+
+    public static Kernel Init()
+    {
+        Console.WriteLine("=========== GptOnConsole =============");
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+         .AddJsonFile("appsettings.json")
+         .Build();
+
+        string openAIModelId = configuration["OpenAIModelID"];
+        string openAIDeploymentId = configuration["OpenAIDeploymentName"];
+        string openAIEndpoint = configuration["OpenAIEndpoint"];
+        string openAIKey = configuration["OpenAIKey"];
+
+        if (openAIModelId == null || openAIKey == null)
+        {
+            Console.WriteLine("OpenAI credentials not found. Skipping example.");
+            return null;
+        }
+
+        var builder = new KernelBuilder();
+
+        builder.AddAzureOpenAIChatCompletion(
+            openAIDeploymentId!,
+            openAIModelId,
+            openAIEndpoint!,
+            openAIKey
+            );
+
+        return builder.Build();
     }
 
 
