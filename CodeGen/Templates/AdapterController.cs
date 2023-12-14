@@ -30,31 +30,62 @@ namespace CodeGen.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"
-Using Microsoft.AspNetCore.Mvc;
-Using Newtonsoft.Json;
-Using Swashbuckle.AspNetCore.Annotations;
+            this.Write("Using Microsoft.AspNetCore.Mvc;\r\nUsing Newtonsoft.Json;\r\nUsing Swashbuckle.AspNet" +
+                    "Core.Annotations;\r\n\r\nNamespace Commerce.Adapters.");
+            
+            #line 12 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
+            
+            #line default
+            #line hidden
+            this.Write("Adapter.Controllers\r\n{\r\n    [Route(\"v0/Adapter\")]\r\n    [ApiController]\r\n    Publi" +
+                    "c Class ");
+            
+            #line 16 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
+            
+            #line default
+            #line hidden
+            this.Write("AdapterController :   ControllerBase\r\n    {\r\n        Private ReadOnly IMapper map" +
+                    "per;\r\n        Private ReadOnly ILogger<");
+            
+            #line 19 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
+            
+            #line default
+            #line hidden
+            this.Write("AdapterController> logger;\r\n        Private ReadOnly IAvailabilityService availab" +
+                    "ilityService;\r\n        Private ReadOnly IOrderService orderService;\r\n        Pri" +
+                    "vate ReadOnly IPaymentService paymentService;\r\n\r\n        Public ");
+            
+            #line 24 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
+            
+            #line default
+            #line hidden
+            this.Write(@"AdapterController(IAvailabilityService availabilityService, IOrderService orderService, ILogger<BokunAdapterController> logger, IMapper mapper, IPaymentService paymentService)
+        {
+            this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
+            this.availabilityService = availabilityService ?? throw New ArgumentNullException(NameOf(availabilityService));
+            this.orderService = orderService ?? throw New ArgumentNullException(NameOf(orderService));
+            this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper)); ;
+            this.paymentService = paymentService ?? throw New ArgumentNullException(NameOf(paymentService)); ;
+        }
 
-Namespace Commerce.Adapters.GeneratedControllers
-{
-    [Route(""v0/Adapter"")]
-    [ApiController]
-    Public Class GeneratedAdapterController :  ControllerBase
-    {
 
         /// <summary>
         /// ");
             
-            #line 21 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.endpointName));
+            #line 35 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.EndpointName));
             
             #line default
             #line hidden
             this.Write("\r\n        /// </summary>\r\n        /// <param name=\"request\"></param>\r\n        [Ht" +
                     "tpPost(\"");
             
-            #line 24 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.route));
+            #line 38 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.Route));
             
             #line default
             #line hidden

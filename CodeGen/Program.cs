@@ -26,8 +26,9 @@ internal class Program
         {
             ControllerMetaData = new CodeGen.Models.ControllerModel
             {
-                endpointName = "search",
-                route = "/v0/search"
+                EndpointName = "find",
+                Route = "/v1/find",
+                CompanyName = "CreativeTravel"
             }
 
         };

@@ -5,23 +5,37 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="CodeGen.Models" #>
 <#@ import namespace="CodeGen.Templates" #>
-
 Using Microsoft.AspNetCore.Mvc;
 Using Newtonsoft.Json;
 Using Swashbuckle.AspNetCore.Annotations;
 
-Namespace Commerce.Adapters.GeneratedControllers
+Namespace Commerce.Adapters.<#= ControllerMetaData.CompanyName #>Adapter.Controllers
 {
     [Route("v0/Adapter")]
     [ApiController]
-    Public Class GeneratedAdapterController :  ControllerBase
+    Public Class <#= ControllerMetaData.CompanyName #>AdapterController :   ControllerBase
     {
+        Private ReadOnly IMapper mapper;
+        Private ReadOnly ILogger<<#= ControllerMetaData.CompanyName #>AdapterController> logger;
+        Private ReadOnly IAvailabilityService availabilityService;
+        Private ReadOnly IOrderService orderService;
+        Private ReadOnly IPaymentService paymentService;
+
+        Public <#= ControllerMetaData.CompanyName #>AdapterController(IAvailabilityService availabilityService, IOrderService orderService, ILogger<BokunAdapterController> logger, IMapper mapper, IPaymentService paymentService)
+        {
+            this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
+            this.availabilityService = availabilityService ?? throw New ArgumentNullException(NameOf(availabilityService));
+            this.orderService = orderService ?? throw New ArgumentNullException(NameOf(orderService));
+            this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper)); ;
+            this.paymentService = paymentService ?? throw New ArgumentNullException(NameOf(paymentService)); ;
+        }
+
 
         /// <summary>
-        /// <#= ControllerMetaData.endpointName #>
+        /// <#= ControllerMetaData.EndpointName #>
         /// </summary>
         /// <param name="request"></param>
-        [HttpPost("<#= ControllerMetaData.route #>")]
+        [HttpPost("<#= ControllerMetaData.Route #>")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "The request is invalid")]
         Public Async Task<ActionResult<AdapterResultMessage>> AvailabilitySearch([FromBody] AdapterMessage request, CancellationToken cancellationToken)
         {

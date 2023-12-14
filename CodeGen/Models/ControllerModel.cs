@@ -8,7 +8,8 @@ namespace CodeGen.Models
 {
     public class ControllerModel
     {
-        public string endpointName = string.Empty;
-        public string route = string.Empty;
+        public required string EndpointName;
+        public required string Route;
+        public required string CompanyName;
     }
 }
