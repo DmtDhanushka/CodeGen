@@ -3,6 +3,7 @@ using CodeGen.Prompts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using CodeGen.Templates;
 
 namespace HelloWorld;
 

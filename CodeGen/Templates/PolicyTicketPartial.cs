@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeGen
+namespace CodeGen.Templates
 {
     public partial class PolicyTicket
     {

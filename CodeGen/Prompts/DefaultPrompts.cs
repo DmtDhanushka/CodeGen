@@ -8,7 +8,7 @@ namespace CodeGen.Prompts
 {
     public static class DefaultPrompts
     {
-        public static string JokePromptTemplate = @"
+        public static readonly string JokePromptTemplate = @"
 Write a funny joke based on the following person/event.
 Use your imagination go wild.
 Joke should have less than 50 words.

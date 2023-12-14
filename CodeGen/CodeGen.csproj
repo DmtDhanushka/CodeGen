@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="PolicyTicket.cs">
+    <Compile Update="Templates\PolicyTicket.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PolicyTicket.tt</DependentUpon>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="PolicyTicket.tt">
+    <None Update="Templates\PolicyTicket.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>PolicyTicket.cs</LastGenOutput>
     </None>
