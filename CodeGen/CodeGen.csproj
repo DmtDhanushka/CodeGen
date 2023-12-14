@@ -23,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Templates\AdapterController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AdapterController.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\PolicyTicket.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -36,6 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\AdapterController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>AdapterController.cs</LastGenOutput>
+    </None>
     <None Update="Templates\PolicyTicket.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>PolicyTicket.cs</LastGenOutput>

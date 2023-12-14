@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="CodeGen.Models" #>
+<#@ import namespace="CodeGen.Templates" #>
+
+Using Microsoft.AspNetCore.Mvc;
+Using Newtonsoft.Json;
+Using Swashbuckle.AspNetCore.Annotations;
+
+Namespace Commerce.Adapters.GeneratedControllers
+{
+    [Route("v0/Adapter")]
+    [ApiController]
+    Public Class GeneratedAdapterController :  ControllerBase
+    {
+
+        /// <summary>
+        /// <#= ControllerMetaData.endpointName #>
+        /// </summary>
+        /// <param name="request"></param>
+        [HttpPost("<#= ControllerMetaData.route #>")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "The request is invalid")]
+        Public Async Task<ActionResult<AdapterResultMessage>> AvailabilitySearch([FromBody] AdapterMessage request, CancellationToken cancellationToken)
+        {
+            Try
+            {
+                // Map request to service message
+                // Log request payload
+                
+                // Call availability service
+                // Handle response And construct AdapterResultMessage
+                
+                Return Ok(response);
+            }
+            Catch (JsonException ex)
+            {
+                // Log error parsing request payload
+                Return BadRequest();
+            }
+        }
+
+    }
+}

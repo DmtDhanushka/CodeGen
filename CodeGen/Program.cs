@@ -9,12 +9,31 @@ namespace HelloWorld;
 
 internal class Program
 {
-    static async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var kernel = Init();
 
-        await WriteJokeToHTML(kernel);
+        //await WriteJokeToHTML(kernel);
 
+        await GenerateController(kernel);
+
+
+    }
+
+    public static async Task GenerateController(Kernel kernel)
+    {
+        var newControllerTemplate = new AdapterController()
+        {
+            ControllerMetaData = new CodeGen.Models.ControllerModel
+            {
+                endpointName = "search",
+                route = "/v0/search"
+            }
+
+        };
+        string controllerContent = newControllerTemplate.TransformText();
+        Console.WriteLine($"Content {controllerContent}");
+        File.WriteAllText("FakeAdapterController.cs", controllerContent);
     }
 
     public static async Task WriteJokeToHTML(Kernel kernel)
@@ -23,7 +42,6 @@ internal class Program
 
         var newTemplate = new PolicyTicket()
         {
-            SoftwareVersion = "v1.0.2",
             PolicyDetails = new CodeGen.Models.PolicyModel
             {
                 FirstName = "John",
@@ -44,7 +62,7 @@ internal class Program
     public static async Task<string> GenerateJoke(Kernel kernel)
     {
         KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
-            DefaultPrompts.JokePromptTemplate, 
+            DefaultPrompts.JokePromptTemplate,
             new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
         // User input from key board
         Console.WriteLine("Enter your joke event/thing here: ");

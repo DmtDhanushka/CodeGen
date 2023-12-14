@@ -13,15 +13,16 @@ namespace CodeGen.Templates
     using System.Text;
     using System.Collections.Generic;
     using CodeGen.Models;
+    using CodeGen.Templates;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
+    #line 1 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
-    public partial class PolicyTicket : PolicyTicketBase
+    public partial class AdapterController : AdapterControllerBase
     {
 #line hidden
         /// <summary>
@@ -29,43 +30,58 @@ namespace CodeGen.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n\r\n<html>\r\n<head>\r\n</head>\r\n<body style = \"font-family:sans\" >\r\n\r\n    <div>\r\n<h2" +
-                    "> Your Policy</h2>\r\n\t\t<p> Policy Name: ");
+            this.Write(@"
+Using Microsoft.AspNetCore.Mvc;
+Using Newtonsoft.Json;
+Using Swashbuckle.AspNetCore.Annotations;
+
+Namespace Commerce.Adapters.GeneratedControllers
+{
+    [Route(""v0/Adapter"")]
+    [ApiController]
+    Public Class GeneratedAdapterController :  ControllerBase
+    {
+
+        /// <summary>
+        /// ");
             
-            #line 16 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(PolicyDetails.PolicyName));
-            
-            #line default
-            #line hidden
-            this.Write("</p>\r\n\t\t<p> Full name: ");
-            
-            #line 17 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GetFullName()));
-            
-            #line default
-            #line hidden
-            this.Write("</p>\r\n\t\t<p>Date: ");
-            
-            #line 18 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(PolicyDetails.StartDate));
+            #line 21 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.endpointName));
             
             #line default
             #line hidden
-            this.Write("</p>\r\n\t</div>\r\n\t<hr>\r\n<h1> ");
+            this.Write("\r\n        /// </summary>\r\n        /// <param name=\"request\"></param>\r\n        [Ht" +
+                    "tpPost(\"");
             
-            #line 21 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Joke.Title));
-            
-            #line default
-            #line hidden
-            this.Write("</h1>\r\n\t<p> ");
-            
-            #line 22 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\PolicyTicket.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Joke.Description));
+            #line 24 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.route));
             
             #line default
             #line hidden
-            this.Write(" </p>\r\n\r\n</body>\r\n</html>\r\n");
+            this.Write(@""")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, ""The request is invalid"")]
+        Public Async Task<ActionResult<AdapterResultMessage>> AvailabilitySearch([FromBody] AdapterMessage request, CancellationToken cancellationToken)
+        {
+            Try
+            {
+                // Map request to service message
+                // Log request payload
+                
+                // Call availability service
+                // Handle response And construct AdapterResultMessage
+                
+                Return Ok(response);
+            }
+            Catch (JsonException ex)
+            {
+                // Log error parsing request payload
+                Return BadRequest();
+            }
+        }
+
+    }
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +93,7 @@ namespace CodeGen.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
-    public class PolicyTicketBase
+    public class AdapterControllerBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
