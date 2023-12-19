@@ -11,5 +11,6 @@ namespace CodeGen.Models
         public required string EndpointName;
         public required string Route;
         public required string CompanyName;
+
     }
 }

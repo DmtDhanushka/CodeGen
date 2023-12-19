@@ -30,89 +30,14 @@ namespace CodeGen.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("Using Microsoft.AspNetCore.Mvc;\r\nUsing Newtonsoft.Json;\r\nUsing Swashbuckle.AspNet" +
-                    "Core.Annotations;\r\n\r\nNamespace Commerce.Adapters.");
+            this.Write("\r\n");
             
-            #line 12 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
-            
-            #line default
-            #line hidden
-            this.Write("Adapter.Controllers\r\n{\r\n    [Route(\"v0/Adapter\")]\r\n    [ApiController]\r\n    Publi" +
-                    "c Class ");
-            
-            #line 16 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
+            #line 9 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(EndpointsCode));
             
             #line default
             #line hidden
-            this.Write("AdapterController :   ControllerBase\r\n    {\r\n        Private ReadOnly IMapper map" +
-                    "per;\r\n        Private ReadOnly ILogger<");
-            
-            #line 19 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
-            
-            #line default
-            #line hidden
-            this.Write("AdapterController> logger;\r\n        Private ReadOnly IAvailabilityService availab" +
-                    "ilityService;\r\n        Private ReadOnly IOrderService orderService;\r\n        Pri" +
-                    "vate ReadOnly IPaymentService paymentService;\r\n\r\n        Public ");
-            
-            #line 24 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.CompanyName));
-            
-            #line default
-            #line hidden
-            this.Write(@"AdapterController(IAvailabilityService availabilityService, IOrderService orderService, ILogger<BokunAdapterController> logger, IMapper mapper, IPaymentService paymentService)
-        {
-            this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
-            this.availabilityService = availabilityService ?? throw New ArgumentNullException(NameOf(availabilityService));
-            this.orderService = orderService ?? throw New ArgumentNullException(NameOf(orderService));
-            this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper)); ;
-            this.paymentService = paymentService ?? throw New ArgumentNullException(NameOf(paymentService)); ;
-        }
-
-
-        /// <summary>
-        /// ");
-            
-            #line 35 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.EndpointName));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n        /// </summary>\r\n        /// <param name=\"request\"></param>\r\n        [Ht" +
-                    "tpPost(\"");
-            
-            #line 38 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\AdapterController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerMetaData.Route));
-            
-            #line default
-            #line hidden
-            this.Write(@""")]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, ""The request is invalid"")]
-        Public Async Task<ActionResult<AdapterResultMessage>> AvailabilitySearch([FromBody] AdapterMessage request, CancellationToken cancellationToken)
-        {
-            Try
-            {
-                // Map request to service message
-                // Log request payload
-                
-                // Call availability service
-                // Handle response And construct AdapterResultMessage
-                
-                Return Ok(response);
-            }
-            Catch (JsonException ex)
-            {
-                // Log error parsing request payload
-                Return BadRequest();
-            }
-        }
-
-    }
-}
-");
+            this.Write("\r\n\r\n       \r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -4,6 +4,7 @@ namespace CodeGen.Templates
 {
     public partial class AdapterController
     {
-        public ControllerModel? ControllerMetaData { get; set; }
+        public required ControllerModel ControllerMetaData { get; set; }
+        public required string EndpointsCode { get; set; }
     }
 }

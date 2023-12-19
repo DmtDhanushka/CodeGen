@@ -4,8 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using CodeGen.Templates;
+using CodeGen.Resources;
+using CodeGen.Models;
 
-namespace HelloWorld;
+
+namespace CodeGen;
 
 internal class Program
 {
@@ -15,64 +18,50 @@ internal class Program
 
         //await WriteJokeToHTML(kernel);
 
-        await GenerateController(kernel);
+        await WriteControllerToFile(kernel);
 
 
     }
 
-    public static async Task GenerateController(Kernel kernel)
+    public static async Task WriteControllerToFile(Kernel kernel)
     {
+        string generatedCode = await GenerateCode(kernel);
+
         var newControllerTemplate = new AdapterController()
         {
-            ControllerMetaData = new CodeGen.Models.ControllerModel
+            ControllerMetaData = new ControllerModel
             {
+                // ----- ControllerMetaData Not in use atm
                 EndpointName = "find",
                 Route = "/v1/find",
                 CompanyName = "CreativeTravel"
-            }
+            },
+            EndpointsCode = generatedCode
 
         };
         string controllerContent = newControllerTemplate.TransformText();
-        Console.WriteLine($"Content {controllerContent}");
-        File.WriteAllText("FakeAdapterController.cs", controllerContent);
+        Console.WriteLine($"\n----------- Content -----------\n{controllerContent}");
+
+        DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+        File.WriteAllText($"{now.ToString("yyyyMMddHHmmssfff")}FakeAdapterController.cs", controllerContent);
     }
 
-    public static async Task WriteJokeToHTML(Kernel kernel)
-    {
-        string res = await GenerateJoke(kernel);
-
-        var newTemplate = new PolicyTicket()
-        {
-            PolicyDetails = new CodeGen.Models.PolicyModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PolicyName = "Name",
-                StartDate = DateTime.Now.AddDays(2),
-            },
-            Joke = new CodeGen.Models.JokeModel
-            {
-                Description = res,
-                Title = "Joke",
-            }
-        };
-        var content = newTemplate.TransformText();
-        File.WriteAllText("policy.html", content);
-    }
-
-    public static async Task<string> GenerateJoke(Kernel kernel)
+    public static async Task<string> GenerateCode(Kernel kernel)
     {
         KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
-            DefaultPrompts.JokePromptTemplate,
-            new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
-        // User input from key board
-        Console.WriteLine("Enter your joke event/thing here: ");
-        string input = Console.ReadLine();
+            DefaultPrompts.EndpointGeneratorTemplate,
+            new OpenAIPromptExecutionSettings() { Temperature = 0.1, TopP = 1 });
 
-        FunctionResult result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
-        Console.WriteLine("\nJOKE: " + result.GetValue<string>());
+        FunctionResult result = await kernel.InvokeAsync(
+            jokeFunction,
+            new()
+            {
+                ["specification"] = EndpointSpecification.Specification,
+                ["sampleCode"] = TrainingCode.ExampleCode
+            });
+        //Console.WriteLine("\nCODE:\n " + result.GetValue<string>());
 
-        return result.GetValue<string>() ?? "Empty Joke";
+        return result.GetValue<string>() ?? "// Empty code";
     }
 
     public static async Task RunAsync(Kernel kernel)
@@ -114,7 +103,7 @@ Event: {{$input}}
 
     public static Kernel Init()
     {
-        Console.WriteLine("=========== GptOnConsole =============");
+        Console.WriteLine("=========== CodeGen v0 =============");
         IConfigurationRoot configuration = new ConfigurationBuilder()
          .AddJsonFile("appsettings.json")
          .Build();
@@ -141,6 +130,45 @@ Event: {{$input}}
 
         return builder.Build();
     }
+
+    public static async Task WriteJokeToHTML(Kernel kernel)
+    {
+        string res = await GenerateJoke(kernel);
+
+        var newTemplate = new PolicyTicket()
+        {
+            PolicyDetails = new PolicyModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PolicyName = "Name",
+                StartDate = DateTime.Now.AddDays(2),
+            },
+            Joke = new JokeModel
+            {
+                Description = res,
+                Title = "Joke",
+            }
+        };
+        var content = newTemplate.TransformText();
+        File.WriteAllText("policy.html", content);
+    }
+
+    public static async Task<string> GenerateJoke(Kernel kernel)
+    {
+        KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
+            DefaultPrompts.JokePromptTemplate,
+            new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
+        // User input from key board
+        Console.WriteLine("Enter your joke event/thing here: ");
+        string input = Console.ReadLine();
+
+        FunctionResult result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
+        Console.WriteLine("\nJOKE: " + result.GetValue<string>());
+
+        return result.GetValue<string>() ?? "Empty Joke";
+    }
+    
 
 
 }
