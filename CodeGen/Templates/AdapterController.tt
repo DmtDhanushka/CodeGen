@@ -5,7 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="CodeGen.Models" #>
 <#@ import namespace="CodeGen.Templates" #>
-
+/// GPT 3 ================================================================================
 <#= EndpointsCode #>
-
+/// GPT 3 ================================================================================
        

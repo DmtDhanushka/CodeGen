@@ -35,19 +35,9 @@ namespace Commerce.Adapters.CitybreakAdapter.Controllers
             this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));
         }
 
-
-        /// <summary>
-        /// <para>Product lookup.</para>
-        /// <para>
-        /// One entry in HttpEndpoints should be set up:
-        /// Product search {{ApiBase}}/api/activity
-        /// </para>
-        /// </summary>
-        /// <param name="request">The product lookup request object. <see cref="AdapterMessage"/></param>
-        /// <returns><see cref="AdapterResultMessage"/></returns>
-        		
-<#= EndpointsCode #>
-
+// GPT 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        <#= EndpointsCode #>
+// GPT 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         /// <summary>
         /// Creates ProductServiceMessage based on ServiceMessage, AdapterConfig And AuthorizationConfig. 

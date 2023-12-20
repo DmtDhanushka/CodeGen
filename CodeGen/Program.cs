@@ -16,7 +16,6 @@ internal class Program
     {
         var kernel = Init();
 
-        //await WriteJokeToHTML(kernel);
 
         //await WriteControllerToFile(kernel);
 

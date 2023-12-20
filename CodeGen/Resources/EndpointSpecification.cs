@@ -47,22 +47,28 @@
 ";
 
         public static readonly string ProductEndpointSpecs = @"
-    ""endpoints"": [
-        {
-            ""name"": ""Accommodation"",
-            ""functionName"": ""GetAccomodation"",
-            ""httpMethod"": ""POST"",
-            ""route"": ""accommodation"",
-        }
-    ]
-";
+            ""endpoints"": [
+                {
+                    ""name"": ""Accommodation"",
+                    ""functionName"": ""GetAccomodation"",
+                    ""httpMethod"": ""POST"",
+                    ""route"": ""accommodation"",
+                },
+                {
+                    ""name"": ""Activity"",
+                    ""functionName"": ""GetActivity"",
+                    ""httpMethod"": ""POST"",
+                    ""route"": ""activity"",
+                }
+            ]
+        ";
 
         public static readonly string ProudctServiceSpecs = @"
-    {
-        ""name"": ""Products"",
-        ""functionName"": ""GetProduct"",
-        ""productTypes"":  ""Activity"", ""Transport"", ""Accommodation"",
-    }
-";
+            {
+                ""name"": ""Products"",
+                ""functionName"": ""GetProduct"",
+                ""productTypes"":  ""Activity"", ""Transport"", ""Accommodation"",
+            }
+        ";
     }
 }

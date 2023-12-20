@@ -46,8 +46,9 @@ namespace Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer
         }
 
         /// <inheritdoc/>
+// GPT 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         <#= GeneratedCode #>
-
+// GPT 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         public static List<string> ConvertToStringList(string item)
         {
             List<string> list = new List<string>();

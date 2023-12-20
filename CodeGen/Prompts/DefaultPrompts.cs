@@ -82,7 +82,7 @@ This is the specification for the given sample code and I want you to understand
    
 ++++++++++++++++++++++++ Sample code specification ends ++++++++++++++++++++++++
 
-Following the same code style I want you to write an endpoints which has following specification.
+Following the same code style I want you to write functions which has following specification.
 
 ++++++++++++++++++++++++ Specification start ++++++++++++++++++++++++
 

@@ -46,45 +46,42 @@ namespace CodeGen.Templates
                     "tNullException(NameOf(logger));\r\n            this.productService = productServic" +
                     "e ?? throw New ArgumentNullException(NameOf(productService));\r\n            this." +
                     "mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));\r\n        }\r\n" +
-                    "\r\n\r\n        /// <summary>\r\n        /// <para>Product lookup.</para>\r\n        ///" +
-                    " <para>\r\n        /// One entry in HttpEndpoints should be set up:\r\n        /// P" +
-                    "roduct search {{ApiBase}}/api/activity\r\n        /// </para>\r\n        /// </summa" +
-                    "ry>\r\n        /// <param name=\"request\">The product lookup request object. <see c" +
-                    "ref=\"AdapterMessage\"/></param>\r\n        /// <returns><see cref=\"AdapterResultMes" +
-                    "sage\"/></returns>\r\n        \t\t\r\n");
+                    "\r\n// GPT 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    ">>>>>>>>>>>>>>\r\n        ");
             
-            #line 49 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\CBProductController.tt"
+            #line 39 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\CBProductController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EndpointsCode));
             
             #line default
             #line hidden
-            this.Write("\r\n\r\n\r\n        /// <summary>\r\n        /// Creates ProductServiceMessage based on S" +
-                    "erviceMessage, AdapterConfig And AuthorizationConfig. \r\n        /// </summary>\r\n" +
-                    "        /// <param name=\"serviceMessage\">Adapter service message object. <see cr" +
-                    "ef=\"ServiceMessage\"/></param>\r\n        /// <param name=\"config\">Adapter configur" +
-                    "ation object. <see cref=\"AdapterConfig\"/></param>\r\n        /// <param name=\"auth" +
-                    "orizationConfig\">Authorization configuration object. <see cref=\"AuthorizationCon" +
-                    "fig\"/></param>\r\n        /// <returns><see cref=\"ProductServiceMessage\"/></return" +
-                    "s>\r\n        /// <exception cref=\"ArgumentNullException\"></exception>\r\n        pr" +
-                    "ivate ProductServiceMessage CreateProductServiceMessage(ServiceMessage serviceMe" +
-                    "ssage, AdapterConfig config, AuthorizationConfig authorizationConfig)\r\n        {" +
-                    "\r\n            if (serviceMessage == null)\r\n                throw new ArgumentNul" +
-                    "lException(nameof(serviceMessage));\r\n            if (string.IsNullOrEmpty(servic" +
-                    "eMessage.Payload))\r\n                throw new ArgumentNullException(nameof(servi" +
-                    "ceMessage.Payload));\r\n            if (authorizationConfig == null)\r\n            " +
-                    "    throw new ArgumentNullException(nameof(authorizationConfig));\r\n            i" +
-                    "f (!(config.HttpEndpoints?.Any() ?? true))\r\n                throw new ArgumentNu" +
-                    "llException(nameof(config.HttpEndpoints));\r\n\r\n            // We may need multipl" +
-                    "e addresses, so they have to be sent in HttpEndpoints.\r\n            ProductServi" +
-                    "ceConfig serviceConfig = new ProductServiceConfig\r\n            {\r\n              " +
-                    "  HttpEndpoints = config.HttpEndpoints.ToList()\r\n            };\r\n\r\n            /" +
-                    "/ Deserialize the base message from the payload JSON.\r\n            ProductServic" +
-                    "eMessage? message = JsonConvert.DeserializeObject<ProductServiceMessage>(service" +
-                    "Message.Payload);\r\n\r\n            if (message == null)\r\n                throw new" +
-                    " Exception(\"Deserialization of product service message failed.\");\r\n\r\n           " +
-                    " // Set the config objects.\r\n            message.ServiceConfig = serviceConfig;\r" +
-                    "\n            message.AuthorizationConfig = authorizationConfig;\r\n\r\n            r" +
-                    "eturn message;\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("\r\n// GPT 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" +
+                    "<<<<<<<<<<<<<\r\n\r\n        /// <summary>\r\n        /// Creates ProductServiceMessag" +
+                    "e based on ServiceMessage, AdapterConfig And AuthorizationConfig. \r\n        /// " +
+                    "</summary>\r\n        /// <param name=\"serviceMessage\">Adapter service message obj" +
+                    "ect. <see cref=\"ServiceMessage\"/></param>\r\n        /// <param name=\"config\">Adap" +
+                    "ter configuration object. <see cref=\"AdapterConfig\"/></param>\r\n        /// <para" +
+                    "m name=\"authorizationConfig\">Authorization configuration object. <see cref=\"Auth" +
+                    "orizationConfig\"/></param>\r\n        /// <returns><see cref=\"ProductServiceMessag" +
+                    "e\"/></returns>\r\n        /// <exception cref=\"ArgumentNullException\"></exception>" +
+                    "\r\n        private ProductServiceMessage CreateProductServiceMessage(ServiceMessa" +
+                    "ge serviceMessage, AdapterConfig config, AuthorizationConfig authorizationConfig" +
+                    ")\r\n        {\r\n            if (serviceMessage == null)\r\n                throw new" +
+                    " ArgumentNullException(nameof(serviceMessage));\r\n            if (string.IsNullOr" +
+                    "Empty(serviceMessage.Payload))\r\n                throw new ArgumentNullException(" +
+                    "nameof(serviceMessage.Payload));\r\n            if (authorizationConfig == null)\r\n" +
+                    "                throw new ArgumentNullException(nameof(authorizationConfig));\r\n " +
+                    "           if (!(config.HttpEndpoints?.Any() ?? true))\r\n                throw ne" +
+                    "w ArgumentNullException(nameof(config.HttpEndpoints));\r\n\r\n            // We may " +
+                    "need multiple addresses, so they have to be sent in HttpEndpoints.\r\n            " +
+                    "ProductServiceConfig serviceConfig = new ProductServiceConfig\r\n            {\r\n  " +
+                    "              HttpEndpoints = config.HttpEndpoints.ToList()\r\n            };\r\n\r\n " +
+                    "           // Deserialize the base message from the payload JSON.\r\n            P" +
+                    "roductServiceMessage? message = JsonConvert.DeserializeObject<ProductServiceMess" +
+                    "age>(serviceMessage.Payload);\r\n\r\n            if (message == null)\r\n             " +
+                    "   throw new Exception(\"Deserialization of product service message failed.\");\r\n\r" +
+                    "\n            // Set the config objects.\r\n            message.ServiceConfig = ser" +
+                    "viceConfig;\r\n            message.AuthorizationConfig = authorizationConfig;\r\n\r\n " +
+                    "           return message;\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

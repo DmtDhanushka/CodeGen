@@ -51,542 +51,544 @@ namespace CodeGen.Templates
                     "\r\n        public ProductService(IHttpClient httpClient, ILogger<ProductService> " +
                     "logger)\r\n        {\r\n            _client = httpClient ?? throw new ArgumentNullEx" +
                     "ception(nameof(httpClient));\r\n            _logger = logger ?? throw new Argument" +
-                    "NullException(nameof(logger));\r\n        }\r\n\r\n        /// <inheritdoc/>\r\n        " +
-                    "");
+                    "NullException(nameof(logger));\r\n        }\r\n\r\n        /// <inheritdoc/>\r\n// GPT 3" +
+                    " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    ">>>>\r\n        ");
             
-            #line 49 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\ProductService.tt"
+            #line 50 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\ProductService.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GeneratedCode));
             
             #line default
             #line hidden
-            this.Write("\r\n\r\n        public static List<string> ConvertToStringList(string item)\r\n        " +
-                    "{\r\n            List<string> list = new List<string>();\r\n\r\n            if (string" +
-                    ".IsNullOrEmpty(item))\r\n                return list;\r\n\r\n            item = item.R" +
-                    "eplace(\"<ul></ul>\", \"\");\r\n            item = item.Replace(\"<p></p>\", \"\");\r\n     " +
-                    "       item = item.Replace(\"<b></b>\", \"\");\r\n            item = item.Replace(\"<i>" +
-                    "</i>\", \"\");\r\n            item = item.Replace(\"<u></u>\", \"\");\r\n            item =" +
-                    " item.Replace(\"<sub></sub>\", \"\");\r\n            item = item.Replace(\"<sup></sup>\"" +
-                    ", \"\");\r\n            item = item.Replace(\"<strike></strike>\", \"\");\r\n\r\n           " +
-                    " if (item.Contains(\"<div\"))\r\n            {\r\n                string pattern = @\"<" +
-                    "div.*?>.*?</div>\";\r\n                item = Regex.Replace(item, pattern, string.E" +
-                    "mpty);\r\n            }\r\n\r\n            if (item.Contains(\"<li\"))\r\n            {\r\n " +
-                    "               MatchCollection matches = Regex.Matches(item, @\"<li.*?>(.*?)</li>" +
-                    "\");\r\n\r\n                foreach (Match match in matches)\r\n                {\r\n    " +
-                    "                if (match.Groups[1].Value.Contains(\"<p\"))\r\n                    {" +
-                    "\r\n\r\n                        MatchCollection matches2 = Regex.Matches(match.Group" +
-                    "s[1].Value, @\"<p.*?>(.*?)</p>\");\r\n                        foreach (Match match2 " +
-                    "in matches2)\r\n                        {\r\n                            if (match2." +
-                    "Groups[1].Value.Contains(\"<br />\"))\r\n                            {\r\n            " +
-                    "                    list.AddRange(match2.Groups[1].Value.Split(new string[] { \"<" +
-                    "br />\" }, StringSplitOptions.None).ToList());\r\n                            }\r\n  " +
-                    "                          else\r\n                                list.Add(match2." +
-                    "Groups[1].Value);\r\n                        }\r\n                    }\r\n           " +
-                    "         else\r\n                    {\r\n                        if (match.Groups[1" +
-                    "].Value.Contains(\"<br />\"))\r\n                        {\r\n                        " +
-                    "    list.AddRange(match.Groups[1].Value.Split(new string[] { \"<br />\" }, StringS" +
-                    "plitOptions.None).ToList());\r\n                        }\r\n                       " +
-                    " else\r\n                            list.Add(match.Groups[1].Value);\r\n           " +
-                    "         }\r\n                }\r\n            }\r\n            else if (item.Contains" +
-                    "(\"<p\"))\r\n            {\r\n                MatchCollection matches = Regex.Matches(" +
-                    "item, @\"<p.*?>(.*?)</p>\");\r\n                foreach (Match match in matches)\r\n  " +
-                    "              {\r\n                    if (match.Groups[1].Value.Contains(\"<br />\"" +
-                    "))\r\n                    {\r\n                        list.AddRange(match.Groups[1]" +
-                    ".Value.Split(new string[] { \"<br />\" }, StringSplitOptions.None).ToList());\r\n   " +
-                    "                 }\r\n                    else\r\n                        list.Add(m" +
-                    "atch.Groups[1].Value);\r\n                }\r\n            }\r\n            else if (i" +
-                    "tem.Contains(\"\\r\\n\"))\r\n            {\r\n                list = item.Split(new stri" +
-                    "ng[] { \"\\r\\n\" }, StringSplitOptions.None).ToList();\r\n            }\r\n            " +
-                    "else if (item.Contains(\"<br />\"))\r\n            {\r\n                list = item.Sp" +
-                    "lit(new string[] { \"<br />\" }, StringSplitOptions.None).ToList();\r\n            }" +
-                    "\r\n            else\r\n                list.Add(item);\r\n\r\n            list.ForEach(" +
-                    "i => i = i.EndsWith(\"<br>\") ? i.Replace(\"<br>\", \"\") : i);\r\n\r\n\r\n            for (" +
-                    "int i = 0; i < list.Count; i++)\r\n            {\r\n                list[i] = list[i" +
-                    "].EndsWith(\"<br>\") ? list[i].Replace(\"<br>\", \"\") : list[i];\r\n            }\r\n\r\n  " +
-                    "          list.RemoveAll(l => string.IsNullOrEmpty(l) || l.Equals(\"<br />\") || l" +
-                    ".Equals(\"<br>\") || string.IsNullOrWhiteSpace(l));\r\n\r\n            //foreach (var " +
-                    "str in list)\r\n            //{\r\n            //    if (str.Contains(\"<\") || str.Co" +
-                    "ntains(\"\\r\\n\") || str.Contains(\"/>\"))\r\n            //        _ = item;\r\n        " +
-                    "    //}\r\n            return list;\r\n        }\r\n\r\n        private void VerifyField" +
-                    "s(List<ExportProductTranslation> translations)\r\n        {\r\n            foreach (" +
-                    "var trans in translations)\r\n            {\r\n                if (trans.Requirement" +
-                    "s.Any())\r\n                {\r\n                    foreach (var item in trans.Requ" +
-                    "irements)\r\n                    {\r\n                        if (item.Contains(\"<ul" +
-                    ">\") || item.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n                         " +
-                    "   _ = trans.Requirements;\r\n                        else\r\n                      " +
-                    "      _ = trans.Requirements;\r\n                    }\r\n                }\r\n\r\n     " +
-                    "           if (trans.WhatIsIncluded.Any())\r\n                {\r\n                 " +
-                    "   foreach (var item in trans.WhatIsIncluded)\r\n                    {\r\n          " +
-                    "              if (item.Contains(\"<ul>\") || item.Contains(\"<p>\") || item.Contains" +
-                    "(\"\\r\\n\"))\r\n                            _ = trans.WhatIsIncluded;\r\n              " +
-                    "          else\r\n                            _ = trans.WhatIsIncluded;\r\n         " +
-                    "           }\r\n                }\r\n\r\n                if (trans.WhatIsNotIncluded.A" +
-                    "ny())\r\n                {\r\n                    foreach (var item in trans.WhatIsN" +
-                    "otIncluded)\r\n                    {\r\n                        if (item.Contains(\"<" +
+            this.Write("\r\n// GPT 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" +
+                    "<<<<<<<<<<<<<\r\n        public static List<string> ConvertToStringList(string ite" +
+                    "m)\r\n        {\r\n            List<string> list = new List<string>();\r\n\r\n          " +
+                    "  if (string.IsNullOrEmpty(item))\r\n                return list;\r\n\r\n            i" +
+                    "tem = item.Replace(\"<ul></ul>\", \"\");\r\n            item = item.Replace(\"<p></p>\"," +
+                    " \"\");\r\n            item = item.Replace(\"<b></b>\", \"\");\r\n            item = item." +
+                    "Replace(\"<i></i>\", \"\");\r\n            item = item.Replace(\"<u></u>\", \"\");\r\n      " +
+                    "      item = item.Replace(\"<sub></sub>\", \"\");\r\n            item = item.Replace(\"" +
+                    "<sup></sup>\", \"\");\r\n            item = item.Replace(\"<strike></strike>\", \"\");\r\n\r" +
+                    "\n            if (item.Contains(\"<div\"))\r\n            {\r\n                string p" +
+                    "attern = @\"<div.*?>.*?</div>\";\r\n                item = Regex.Replace(item, patte" +
+                    "rn, string.Empty);\r\n            }\r\n\r\n            if (item.Contains(\"<li\"))\r\n    " +
+                    "        {\r\n                MatchCollection matches = Regex.Matches(item, @\"<li.*" +
+                    "?>(.*?)</li>\");\r\n\r\n                foreach (Match match in matches)\r\n           " +
+                    "     {\r\n                    if (match.Groups[1].Value.Contains(\"<p\"))\r\n         " +
+                    "           {\r\n\r\n                        MatchCollection matches2 = Regex.Matches" +
+                    "(match.Groups[1].Value, @\"<p.*?>(.*?)</p>\");\r\n                        foreach (M" +
+                    "atch match2 in matches2)\r\n                        {\r\n                           " +
+                    " if (match2.Groups[1].Value.Contains(\"<br />\"))\r\n                            {\r\n" +
+                    "                                list.AddRange(match2.Groups[1].Value.Split(new s" +
+                    "tring[] { \"<br />\" }, StringSplitOptions.None).ToList());\r\n                     " +
+                    "       }\r\n                            else\r\n                                list" +
+                    ".Add(match2.Groups[1].Value);\r\n                        }\r\n                    }\r" +
+                    "\n                    else\r\n                    {\r\n                        if (ma" +
+                    "tch.Groups[1].Value.Contains(\"<br />\"))\r\n                        {\r\n            " +
+                    "                list.AddRange(match.Groups[1].Value.Split(new string[] { \"<br />" +
+                    "\" }, StringSplitOptions.None).ToList());\r\n                        }\r\n           " +
+                    "             else\r\n                            list.Add(match.Groups[1].Value);\r" +
+                    "\n                    }\r\n                }\r\n            }\r\n            else if (i" +
+                    "tem.Contains(\"<p\"))\r\n            {\r\n                MatchCollection matches = Re" +
+                    "gex.Matches(item, @\"<p.*?>(.*?)</p>\");\r\n                foreach (Match match in " +
+                    "matches)\r\n                {\r\n                    if (match.Groups[1].Value.Conta" +
+                    "ins(\"<br />\"))\r\n                    {\r\n                        list.AddRange(mat" +
+                    "ch.Groups[1].Value.Split(new string[] { \"<br />\" }, StringSplitOptions.None).ToL" +
+                    "ist());\r\n                    }\r\n                    else\r\n                      " +
+                    "  list.Add(match.Groups[1].Value);\r\n                }\r\n            }\r\n          " +
+                    "  else if (item.Contains(\"\\r\\n\"))\r\n            {\r\n                list = item.Sp" +
+                    "lit(new string[] { \"\\r\\n\" }, StringSplitOptions.None).ToList();\r\n            }\r\n" +
+                    "            else if (item.Contains(\"<br />\"))\r\n            {\r\n                li" +
+                    "st = item.Split(new string[] { \"<br />\" }, StringSplitOptions.None).ToList();\r\n " +
+                    "           }\r\n            else\r\n                list.Add(item);\r\n\r\n            l" +
+                    "ist.ForEach(i => i = i.EndsWith(\"<br>\") ? i.Replace(\"<br>\", \"\") : i);\r\n\r\n\r\n     " +
+                    "       for (int i = 0; i < list.Count; i++)\r\n            {\r\n                list" +
+                    "[i] = list[i].EndsWith(\"<br>\") ? list[i].Replace(\"<br>\", \"\") : list[i];\r\n       " +
+                    "     }\r\n\r\n            list.RemoveAll(l => string.IsNullOrEmpty(l) || l.Equals(\"<" +
+                    "br />\") || l.Equals(\"<br>\") || string.IsNullOrWhiteSpace(l));\r\n\r\n            //f" +
+                    "oreach (var str in list)\r\n            //{\r\n            //    if (str.Contains(\"<" +
+                    "\") || str.Contains(\"\\r\\n\") || str.Contains(\"/>\"))\r\n            //        _ = ite" +
+                    "m;\r\n            //}\r\n            return list;\r\n        }\r\n\r\n        private void" +
+                    " VerifyFields(List<ExportProductTranslation> translations)\r\n        {\r\n         " +
+                    "   foreach (var trans in translations)\r\n            {\r\n                if (trans" +
+                    ".Requirements.Any())\r\n                {\r\n                    foreach (var item i" +
+                    "n trans.Requirements)\r\n                    {\r\n                        if (item.C" +
+                    "ontains(\"<ul>\") || item.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n             " +
+                    "               _ = trans.Requirements;\r\n                        else\r\n          " +
+                    "                  _ = trans.Requirements;\r\n                    }\r\n              " +
+                    "  }\r\n\r\n                if (trans.WhatIsIncluded.Any())\r\n                {\r\n     " +
+                    "               foreach (var item in trans.WhatIsIncluded)\r\n                    {" +
+                    "\r\n                        if (item.Contains(\"<ul>\") || item.Contains(\"<p>\") || i" +
+                    "tem.Contains(\"\\r\\n\"))\r\n                            _ = trans.WhatIsIncluded;\r\n  " +
+                    "                      else\r\n                            _ = trans.WhatIsIncluded" +
+                    ";\r\n                    }\r\n                }\r\n\r\n                if (trans.WhatIsN" +
+                    "otIncluded.Any())\r\n                {\r\n                    foreach (var item in t" +
+                    "rans.WhatIsNotIncluded)\r\n                    {\r\n                        if (item" +
+                    ".Contains(\"<ul>\") || item.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n           " +
+                    "                 _ = trans.WhatIsNotIncluded;\r\n                        else\r\n   " +
+                    "                         _ = trans.WhatIsNotIncluded;\r\n                    }\r\n  " +
+                    "              }\r\n\r\n                if (trans.Duration.HasValue)\r\n               " +
+                    " {\r\n                    _ = trans.Duration;\r\n                }\r\n\r\n              " +
+                    "  if (!string.IsNullOrEmpty(trans.AgeLimit))\r\n                {\r\n               " +
+                    "     if (trans.AgeLimit.Contains(\"<\") && trans.AgeLimit.Contains(\">\"))\r\n        " +
+                    "                _ = trans.AgeLimit;\r\n                    else\r\n                 " +
+                    "       _ = trans.AgeLimit;\r\n                }\r\n\r\n                if (trans.Direc" +
+                    "tions.Any())\r\n                {\r\n                    foreach (var item in trans." +
+                    "Directions)\r\n                    {\r\n                        if (item.Contains(\"<" +
                     "ul>\") || item.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n                       " +
-                    "     _ = trans.WhatIsNotIncluded;\r\n                        else\r\n               " +
-                    "             _ = trans.WhatIsNotIncluded;\r\n                    }\r\n              " +
-                    "  }\r\n\r\n                if (trans.Duration.HasValue)\r\n                {\r\n        " +
-                    "            _ = trans.Duration;\r\n                }\r\n\r\n                if (!strin" +
-                    "g.IsNullOrEmpty(trans.AgeLimit))\r\n                {\r\n                    if (tra" +
-                    "ns.AgeLimit.Contains(\"<\") && trans.AgeLimit.Contains(\">\"))\r\n                    " +
-                    "    _ = trans.AgeLimit;\r\n                    else\r\n                        _ = t" +
-                    "rans.AgeLimit;\r\n                }\r\n\r\n                if (trans.Directions.Any())" +
-                    "\r\n                {\r\n                    foreach (var item in trans.Directions)\r" +
-                    "\n                    {\r\n                        if (item.Contains(\"<ul>\") || ite" +
-                    "m.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n                            _ = tra" +
-                    "ns.Directions;\r\n                        else\r\n                            _ = tr" +
-                    "ans.Directions;\r\n                    }\r\n                }\r\n\r\n                if " +
-                    "(trans.GuideLanguages.Any())\r\n                {\r\n                    foreach (va" +
-                    "r item in trans.GuideLanguages)\r\n                    {\r\n                        " +
-                    "if (item.Contains(\"<ul>\") || item.Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n   " +
-                    "                         _ = trans.GuideLanguages;\r\n                        else" +
-                    "\r\n                            _ = trans.GuideLanguages;\r\n                    }\r\n" +
-                    "                }\r\n\r\n                if (trans.WhatToBring.Any())\r\n             " +
-                    "   {\r\n                    foreach (var item in trans.WhatToBring)\r\n             " +
-                    "       {\r\n                        if (item.Contains(\"<ul>\") || item.Contains(\"<p" +
-                    ">\") || item.Contains(\"\\r\\n\"))\r\n                            _ = trans.WhatToBring" +
-                    ";\r\n                        else\r\n                            _ = trans.WhatToBri" +
-                    "ng;\r\n                    }\r\n                }\r\n            }\r\n\r\n        }\r\n\r\n   " +
-                    "     private async Task<ProductSearchResponse>  CallProductSearch(ProductSearchR" +
-                    "equest request, Uri uri, string culture, AuthorizationConfig authorizationConfig" +
-                    ", TimeSpan? timeout, CancellationToken cancellationToken)\r\n        {\r\n          " +
-                    "  string jsonMessage = JsonConvert.SerializeObject(request);\r\n            String" +
-                    "Content content = new StringContent(jsonMessage, Encoding.UTF8, \"application/jso" +
-                    "n\");\r\n            Dictionary<string, List<string>> headers = HttpClientHelpers.C" +
-                    "reateHeaders(uri, HttpMethod.Get, culture, authorizationConfig, cancellationToke" +
-                    "n);\r\n\r\n            try\r\n            {\r\n                return await MakePostCall" +
-                    "<ProductSearchResponse>(uri, headers, content, authorizationConfig, timeout, can" +
-                    "cellationToken);\r\n            }\r\n            catch (Exception ex)\r\n            {" +
-                    "\r\n                return new ProductSearchResponse\r\n                {\r\n         " +
-                    "           IsError = true,\r\n                    Message = ex.Message,\r\n         " +
-                    "           Status = StatusCodes.Status400BadRequest\r\n                };\r\n       " +
-                    "     }\r\n        }\r\n\r\n        private async Task<T> MakePostCall<T>(Uri uri, Dict" +
-                    "ionary<string, List<string>> headers, StringContent content, AuthorizationConfig" +
-                    " authorizationConfig, TimeSpan? timeout, CancellationToken cancellationToken) wh" +
-                    "ere T : ErrorResponse\r\n        {\r\n            HttpResponseMessage response;\r\n   " +
-                    "         int statusCode = 0;\r\n            string responseBody;\r\n\r\n            tr" +
-                    "y\r\n            {\r\n                response = await _client.PostAsync(uri, conten" +
-                    "t, headers, timeout, cancellationToken);\r\n                statusCode = (int)resp" +
-                    "onse.StatusCode;\r\n\r\n                responseBody = await HttpClientHelpers.GetBo" +
-                    "dy(response);\r\n            }\r\n            catch (Exception ex)\r\n            {\r\n " +
-                    "               statusCode = statusCode != 0 ? statusCode : StatusCodes.Status500" +
-                    "InternalServerError;\r\n\r\n                var errorMessage = $\"GalaxyAPI returned " +
-                    "an exception. StatusCode: {statusCode}.\";\r\n                _logger.LogError(ex, " +
-                    "errorMessage);\r\n\r\n                throw new Exception(errorMessage, ex);\r\n      " +
-                    "      }\r\n\r\n            if (response.StatusCode != HttpStatusCode.OK)\r\n          " +
-                    "  {\r\n                try\r\n                {\r\n                    T errorResponse" +
-                    " = JsonConvert.DeserializeObject<T>(responseBody);\r\n                    errorRes" +
-                    "ponse.IsError = true;\r\n\r\n                    string errorMessage = $\"The call to" +
-                    " GalaxyAPI failed. Status code: {response.StatusCode}. Status: {errorResponse.St" +
-                    "atus}. Message: {errorResponse.Message}.\";\r\n                    _logger.LogError" +
-                    "(errorMessage);\r\n\r\n                    return errorResponse;\r\n                }\r" +
-                    "\n                catch (Exception ex)\r\n                {\r\n                    us" +
-                    "ing (_logger.BeginScope(new Dictionary<string, object>\r\n                    {\r\n " +
-                    "                       [\"ResponseBody\"] = responseBody,\r\n                    }))" +
-                    "\r\n                    {\r\n                        string errorMessage = $\"An excp" +
-                    "etion was thrown when parsing the error response from GalaxyAPI.\";\r\n            " +
-                    "            _logger.LogError(ex, errorMessage);\r\n                        throw n" +
-                    "ew Exception(errorMessage, ex);\r\n                    }\r\n                }\r\n     " +
-                    "       }\r\n\r\n            T result;\r\n            try\r\n            {\r\n             " +
-                    "   result = JsonConvert.DeserializeObject<T>(responseBody);\r\n            }\r\n    " +
-                    "        catch (Exception ex)\r\n            {\r\n                using (_logger.Begi" +
-                    "nScope(new Dictionary<string, object>\r\n                {\r\n                    [\"" +
-                    "ResponseBody\"] = responseBody,\r\n                }))\r\n                {\r\n        " +
-                    "            var errorMessage = $\"An excpetion was thrown when parsing the respon" +
-                    "se from GalaxyAPI.\";\r\n                    _logger.LogError(ex, errorMessage);\r\n " +
-                    "                   throw new Exception(errorMessage, ex);\r\n                }\r\n  " +
-                    "          }\r\n\r\n            if (result == null)\r\n            {\r\n                v" +
-                    "ar _errorMessage = $\"Product result from GalaxyAPI system was null.\";\r\n         " +
-                    "       _logger.LogError(_errorMessage);\r\n                throw new Exception(_er" +
-                    "rorMessage);\r\n            }\r\n\r\n            return result;\r\n        }\r\n\r\n        " +
-                    "private ProductResponse CreateProductResponse(ProductSearchResponse result, Prod" +
-                    "uctServiceMessage request, string language, ulong page, int pageSize, bool inclu" +
-                    "deAttributes)\r\n        {\r\n            if (result == null)\r\n                retur" +
-                    "n new ProductResponse\r\n                {\r\n                    Error = true,\r\n   " +
-                    "                 ErrorMessage = \"No response from GalaxyAPI.\",\r\n                " +
+                    "     _ = trans.Directions;\r\n                        else\r\n                      " +
+                    "      _ = trans.Directions;\r\n                    }\r\n                }\r\n\r\n       " +
+                    "         if (trans.GuideLanguages.Any())\r\n                {\r\n                   " +
+                    " foreach (var item in trans.GuideLanguages)\r\n                    {\r\n            " +
+                    "            if (item.Contains(\"<ul>\") || item.Contains(\"<p>\") || item.Contains(\"" +
+                    "\\r\\n\"))\r\n                            _ = trans.GuideLanguages;\r\n                " +
+                    "        else\r\n                            _ = trans.GuideLanguages;\r\n           " +
+                    "         }\r\n                }\r\n\r\n                if (trans.WhatToBring.Any())\r\n " +
+                    "               {\r\n                    foreach (var item in trans.WhatToBring)\r\n " +
+                    "                   {\r\n                        if (item.Contains(\"<ul>\") || item." +
+                    "Contains(\"<p>\") || item.Contains(\"\\r\\n\"))\r\n                            _ = trans" +
+                    ".WhatToBring;\r\n                        else\r\n                            _ = tra" +
+                    "ns.WhatToBring;\r\n                    }\r\n                }\r\n            }\r\n\r\n    " +
+                    "    }\r\n\r\n        private async Task<ProductSearchResponse>  CallProductSearch(Pr" +
+                    "oductSearchRequest request, Uri uri, string culture, AuthorizationConfig authori" +
+                    "zationConfig, TimeSpan? timeout, CancellationToken cancellationToken)\r\n        {" +
+                    "\r\n            string jsonMessage = JsonConvert.SerializeObject(request);\r\n      " +
+                    "      StringContent content = new StringContent(jsonMessage, Encoding.UTF8, \"app" +
+                    "lication/json\");\r\n            Dictionary<string, List<string>> headers = HttpCli" +
+                    "entHelpers.CreateHeaders(uri, HttpMethod.Get, culture, authorizationConfig, canc" +
+                    "ellationToken);\r\n\r\n            try\r\n            {\r\n                return await " +
+                    "MakePostCall<ProductSearchResponse>(uri, headers, content, authorizationConfig, " +
+                    "timeout, cancellationToken);\r\n            }\r\n            catch (Exception ex)\r\n " +
+                    "           {\r\n                return new ProductSearchResponse\r\n                " +
+                    "{\r\n                    IsError = true,\r\n                    Message = ex.Message" +
+                    ",\r\n                    Status = StatusCodes.Status400BadRequest\r\n               " +
+                    " };\r\n            }\r\n        }\r\n\r\n        private async Task<T> MakePostCall<T>(U" +
+                    "ri uri, Dictionary<string, List<string>> headers, StringContent content, Authori" +
+                    "zationConfig authorizationConfig, TimeSpan? timeout, CancellationToken cancellat" +
+                    "ionToken) where T : ErrorResponse\r\n        {\r\n            HttpResponseMessage re" +
+                    "sponse;\r\n            int statusCode = 0;\r\n            string responseBody;\r\n\r\n  " +
+                    "          try\r\n            {\r\n                response = await _client.PostAsync" +
+                    "(uri, content, headers, timeout, cancellationToken);\r\n                statusCode" +
+                    " = (int)response.StatusCode;\r\n\r\n                responseBody = await HttpClientH" +
+                    "elpers.GetBody(response);\r\n            }\r\n            catch (Exception ex)\r\n    " +
+                    "        {\r\n                statusCode = statusCode != 0 ? statusCode : StatusCod" +
+                    "es.Status500InternalServerError;\r\n\r\n                var errorMessage = $\"GalaxyA" +
+                    "PI returned an exception. StatusCode: {statusCode}.\";\r\n                _logger.L" +
+                    "ogError(ex, errorMessage);\r\n\r\n                throw new Exception(errorMessage, " +
+                    "ex);\r\n            }\r\n\r\n            if (response.StatusCode != HttpStatusCode.OK)" +
+                    "\r\n            {\r\n                try\r\n                {\r\n                    T e" +
+                    "rrorResponse = JsonConvert.DeserializeObject<T>(responseBody);\r\n                " +
+                    "    errorResponse.IsError = true;\r\n\r\n                    string errorMessage = $" +
+                    "\"The call to GalaxyAPI failed. Status code: {response.StatusCode}. Status: {erro" +
+                    "rResponse.Status}. Message: {errorResponse.Message}.\";\r\n                    _log" +
+                    "ger.LogError(errorMessage);\r\n\r\n                    return errorResponse;\r\n      " +
+                    "          }\r\n                catch (Exception ex)\r\n                {\r\n          " +
+                    "          using (_logger.BeginScope(new Dictionary<string, object>\r\n            " +
+                    "        {\r\n                        [\"ResponseBody\"] = responseBody,\r\n           " +
+                    "         }))\r\n                    {\r\n                        string errorMessage" +
+                    " = $\"An excpetion was thrown when parsing the error response from GalaxyAPI.\";\r\n" +
+                    "                        _logger.LogError(ex, errorMessage);\r\n                   " +
+                    "     throw new Exception(errorMessage, ex);\r\n                    }\r\n            " +
+                    "    }\r\n            }\r\n\r\n            T result;\r\n            try\r\n            {\r\n " +
+                    "               result = JsonConvert.DeserializeObject<T>(responseBody);\r\n       " +
+                    "     }\r\n            catch (Exception ex)\r\n            {\r\n                using (" +
+                    "_logger.BeginScope(new Dictionary<string, object>\r\n                {\r\n          " +
+                    "          [\"ResponseBody\"] = responseBody,\r\n                }))\r\n               " +
+                    " {\r\n                    var errorMessage = $\"An excpetion was thrown when parsin" +
+                    "g the response from GalaxyAPI.\";\r\n                    _logger.LogError(ex, error" +
+                    "Message);\r\n                    throw new Exception(errorMessage, ex);\r\n         " +
+                    "       }\r\n            }\r\n\r\n            if (result == null)\r\n            {\r\n     " +
+                    "           var _errorMessage = $\"Product result from GalaxyAPI system was null.\"" +
+                    ";\r\n                _logger.LogError(_errorMessage);\r\n                throw new E" +
+                    "xception(_errorMessage);\r\n            }\r\n\r\n            return result;\r\n        }" +
+                    "\r\n\r\n        private ProductResponse CreateProductResponse(ProductSearchResponse " +
+                    "result, ProductServiceMessage request, string language, ulong page, int pageSize" +
+                    ", bool includeAttributes)\r\n        {\r\n            if (result == null)\r\n         " +
+                    "       return new ProductResponse\r\n                {\r\n                    Error " +
+                    "= true,\r\n                    ErrorMessage = \"No response from GalaxyAPI.\",\r\n    " +
+                    "                ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status" +
+                    "400BadRequest, ErrorCode.RequestError, \"No response from GalaxyAPI.\")\r\n         " +
+                    "       };\r\n\r\n            if (result.IsError || (!result.Items?.Any() ?? true))\r\n" +
+                    "            {\r\n                string message = string.IsNullOrEmpty(result.Mess" +
+                    "age)\r\n                    ? \"Unknown error from GalaxyAPI.\" : result.Message;\r\n\r" +
+                    "\n                return new ProductResponse\r\n                {\r\n                " +
+                    "    Error = true,\r\n                    ErrorMessage = message,\r\n                " +
                     "    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status400BadReques" +
-                    "t, ErrorCode.RequestError, \"No response from GalaxyAPI.\")\r\n                };\r\n\r" +
-                    "\n            if (result.IsError || (!result.Items?.Any() ?? true))\r\n            " +
-                    "{\r\n                string message = string.IsNullOrEmpty(result.Message)\r\n      " +
-                    "              ? \"Unknown error from GalaxyAPI.\" : result.Message;\r\n\r\n           " +
-                    "     return new ProductResponse\r\n                {\r\n                    Error = " +
-                    "true,\r\n                    ErrorMessage = message,\r\n                    ProblemD" +
-                    "etails = new StatusCodeProblemDetails(StatusCodes.Status400BadRequest, ErrorCode" +
-                    ".RequestError, message)\r\n                };\r\n            }\r\n\r\n            // Cal" +
-                    "culate the next page number, if any.\r\n            string nextPage = null;\r\n     " +
-                    "       ulong pageCount = (ulong)Math.Ceiling(result.TotalResults / (decimal)page" +
-                    "Size);\r\n\r\n            if (pageCount > page)\r\n                nextPage = (page + " +
-                    "1).ToString();\r\n\r\n            ProductResponse response = new ProductResponse\r\n  " +
-                    "          {\r\n                Page = page.ToString(),\r\n                NextPage =" +
-                    " nextPage\r\n            };\r\n\r\n            List<ProductItem> products = new List<P" +
-                    "roductItem>();\r\n\r\n            try\r\n            {\r\n                foreach (var i" +
-                    "tem in result.Items)\r\n                {\r\n                    products.Add(MapIte" +
-                    "m(item, request, language, includeAttributes));\r\n                    foreach (va" +
-                    "r childItem in item.Children)\r\n                    {\r\n                        pr" +
-                    "oducts.Add(MapItem(childItem, request, language, includeAttributes));\r\n         " +
-                    "           }\r\n                }\r\n            }\r\n            catch (Exception ex)" +
-                    "\r\n            {\r\n                response = new ProductResponse\r\n               " +
-                    " {\r\n                    Error = true,\r\n                    ErrorMessage = ex.Mes" +
-                    "sage,\r\n                    ProblemDetails = new StatusCodeProblemDetails(StatusC" +
-                    "odes.Status500InternalServerError, ErrorCode.ConfigurationError, ex.Message),\r\n " +
-                    "               };\r\n            }\r\n\r\n            response.Products = products;\r\n " +
-                    "           return response;\r\n        }\r\n\r\n        private ProductItem MapItem(Pr" +
-                    "oductResponseItem item, ProductServiceMessage request, string language, bool inc" +
-                    "ludeAttributes)\r\n        {\r\n            ProductResponseContent content = item.Co" +
-                    "ntent;\r\n\r\n            return MapItem(item.Id, content, request, language, includ" +
-                    "eAttributes);\r\n        }\r\n\r\n        private ProductItem MapItem(ProductResponseC" +
-                    "hild item, ProductServiceMessage request, string language, bool includeAttribute" +
-                    "s)\r\n        {\r\n            ProductResponseContent content = item.Content;\r\n\r\n   " +
-                    "         return MapItem(item.Id, content, request, language, includeAttributes);" +
-                    "\r\n        }\r\n\r\n        private ProductItem MapItem(string productId, ProductResp" +
-                    "onseContent content, ProductServiceMessage request, string language, bool includ" +
-                    "eAttributes)\r\n        {\r\n            string introduction = content.Information?." +
-                    "FirstOrDefault(c => c.Id == 101)?.Value;\r\n            string summary = content.I" +
-                    "nformation?.FirstOrDefault(c => c.Id == 102)?.Value;\r\n            var guideLangu" +
-                    "ages = GetLanguages(content.Information);\r\n            string countryName = GetC" +
-                    "ountryName(content.Information?.FirstOrDefault(c => c.Name == \"Country (address)" +
-                    "\")?.Value);\r\n\r\n            ExportProductTranslation translation = new ExportProd" +
-                    "uctTranslation\r\n            {\r\n                Language = language.Equals(\"en-US" +
-                    "\",StringComparison.InvariantCultureIgnoreCase) ? \"en\" : language,\r\n             " +
-                    "   CountryName = countryName,\r\n                Location = null,\r\n               " +
-                    " Property = null,\r\n                Provider = content.Categories?.FirstOrDefault" +
-                    "(c => c.Id == 36156)?.Path,\r\n                Name = content.Information?.FirstOr" +
-                    "Default(c => c.Id == 99).Value,\r\n                Description = $\"{introduction}\\" +
-                    "r\\n{summary}\".Trim(),\r\n                AgeLimit = content.Information?.FirstOrDe" +
-                    "fault(c => c.Id == 127)?.Value,\r\n                Attention = ConvertToStringList" +
-                    "(content.Information.FirstOrDefault(c => c.Id == 644)?.Value),\r\n                " +
-                    "City = content.Information?.FirstOrDefault(c => c.Id == 121)?.Value,\r\n          " +
-                    "      Directions = ConvertToStringList(content.Information.FirstOrDefault(c => c" +
-                    ".Id == 103)?.Value),\r\n                GuideLanguages = guideLanguages,\r\n        " +
-                    "        MeetingPoints = new List<string> { content.Information.FirstOrDefault(c " +
-                    "=> c.Id == 1051)?.Value },\r\n                Requirements = ConvertToStringList(c" +
-                    "ontent.Information.FirstOrDefault(c => c.Id == 643)?.Value),\r\n\r\n                " +
-                    "//PriceFrom = content.Information.FirstOrDefault(c => c.Id == 1012)?.Value,\r\n   " +
-                    "             //Currency = content.Information.FirstOrDefault(c => c.Id == 402)?." +
-                    "Value,\r\n                //PriceMetric= content.Information.FirstOrDefault(c => c" +
-                    ".Id == 415)?.Value,\r\n                Duration = ConvertToHours(content.Informati" +
-                    "on.FirstOrDefault(c => c.Id == 929)?.Value),\r\n                Overview = content" +
-                    ".Information.FirstOrDefault(c => c.Id == 101)?.Value,\r\n                WhatIsInc" +
-                    "luded = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 641)" +
-                    "?.Value),\r\n                WhatIsNotIncluded = ConvertToStringList(content.Infor" +
-                    "mation.FirstOrDefault(c => c.Id == 1074)?.Value),\r\n                WhatToBring =" +
-                    " ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 642)?.Value" +
-                    "),\r\n\r\n                AvailableFrom = null,// Existing occasions in the products" +
-                    " page. But their API does not support\r\n                AvailableTo = null,// Exi" +
-                    "sting occasions in the products page. But their API does not support\r\n          " +
-                    "      StartTimes = new(),// Existing occasions in the products page. But their A" +
-                    "PI does not support\r\n\r\n                Images = content.Images.Select(c => new E" +
-                    "xportProductImage\r\n                {\r\n                    Caption = c.Descriptio" +
-                    "n,\r\n                    Ordinal = null,\r\n                    IsMain = c.IsMain,\r" +
-                    "\n                    Sizes = new List<ExportProductImageSize> { new ExportProduc" +
-                    "tImageSize\r\n                    {\r\n                        Url = \"https:\" + c.Ur" +
-                    "i\r\n                    } }\r\n                }).ToList(),\r\n                //Canc" +
-                    "ellationPolicies = GetCancellationPoliciesNew(content.Information)\r\n\r\n          " +
-                    "  };\r\n\r\n            ProductItem productItem = new ProductItem\r\n            {\r\n  " +
-                    "              CommerceFulfillmentSchemaId = request.CommerceFulfillmentSchemaId," +
-                    "\r\n                CommerceExternalId = productId,\r\n                Created = nul" +
-                    "l,\r\n                Updated = null,\r\n                CountryCode = null, // TODO" +
-                    ": See if we can find this somewhere.\r\n                PropertyCode = null,\r\n    " +
-                    "            ProductCode = productId,\r\n                Latitude = content.Positio" +
-                    "n?.Latitude,\r\n                Longitude = content.Position?.Longitude,\r\n        " +
-                    "        MinPax = null,// Not in the products page & their API does not support\r\n" +
-                    "                MaxPax = null,// Not in the products page & their API does not s" +
-                    "upport\r\n                Translations = new List<ExportProductTranslation> { tran" +
-                    "slation },\r\n                ProductType = \"Child\", //Specify the product is Pare" +
-                    "nt or Child. For Activities, it is Child\r\n                ProductSource = \"Activ" +
-                    "ity\", //This specify the main source, ie the Category the product belongs to. Eg" +
-                    ": Activity,Accommodation\r\n            };\r\n\r\n            //VerifyFields(productIt" +
-                    "em.Translations);\r\n            if (includeAttributes)\r\n            {\r\n          " +
-                    "      List<EntityAttribute> attributes = new List<EntityAttribute>\r\n            " +
-                    "    {\r\n                    new EntityAttribute\r\n                    {\r\n         " +
-                    "               Name = \"OVERVIEW\",\r\n                        Value = content.Infor" +
-                    "mation.SingleOrDefault(c => c.Name == \"Introduksjon\")?.Value\r\n                  " +
-                    "  },\r\n                    new EntityAttribute\r\n                    {\r\n          " +
-                    "              Name = \"DESCRIPTION\",\r\n                        Value = content.Inf" +
-                    "ormation.SingleOrDefault(c => c.Name == \"Beskrivelse\")?.Value\r\n                 " +
-                    "   },\r\n                    new EntityAttribute\r\n                    {\r\n         " +
-                    "               Name = \"LANGUAGE\",\r\n                        Value = language\r\n   " +
-                    "                 },\r\n                    new EntityAttribute\r\n                  " +
-                    "  {\r\n                        Name = \"POINT_OF_SALES_ID\",\r\n                      " +
-                    "  Value = EntityAttributeHelper.GetAttributeValueAsList(request.SearchAttributes" +
-                    ", \"POINTOFSALESID\").FirstOrDefault()\r\n                    },\r\n                  " +
-                    "  new EntityAttribute\r\n                    {\r\n                        Name = \"CU" +
-                    "RRENCY\",\r\n                        Value = content.Information.SingleOrDefault(c " +
-                    "=> c.Name == \"Valuta\")?.Value\r\n                    },\r\n                    new E" +
-                    "ntityAttribute\r\n                    {\r\n                        Name = \"SUPPLIER_" +
-                    "PRODUCT_ID\",\r\n                        Value = productId\r\n                    },\r" +
-                    "\n                    new EntityAttribute\r\n                    {\r\n               " +
-                    "         Name = \"WHAT_TO_BRING\",\r\n                        Value = content.Inform" +
-                    "ation.SingleOrDefault(c => c.Name == \"What is not included\")?.Value\r\n           " +
+                    "t, ErrorCode.RequestError, message)\r\n                };\r\n            }\r\n\r\n      " +
+                    "      // Calculate the next page number, if any.\r\n            string nextPage = " +
+                    "null;\r\n            ulong pageCount = (ulong)Math.Ceiling(result.TotalResults / (" +
+                    "decimal)pageSize);\r\n\r\n            if (pageCount > page)\r\n                nextPag" +
+                    "e = (page + 1).ToString();\r\n\r\n            ProductResponse response = new Product" +
+                    "Response\r\n            {\r\n                Page = page.ToString(),\r\n              " +
+                    "  NextPage = nextPage\r\n            };\r\n\r\n            List<ProductItem> products " +
+                    "= new List<ProductItem>();\r\n\r\n            try\r\n            {\r\n                fo" +
+                    "reach (var item in result.Items)\r\n                {\r\n                    product" +
+                    "s.Add(MapItem(item, request, language, includeAttributes));\r\n                   " +
+                    " foreach (var childItem in item.Children)\r\n                    {\r\n              " +
+                    "          products.Add(MapItem(childItem, request, language, includeAttributes))" +
+                    ";\r\n                    }\r\n                }\r\n            }\r\n            catch (E" +
+                    "xception ex)\r\n            {\r\n                response = new ProductResponse\r\n   " +
+                    "             {\r\n                    Error = true,\r\n                    ErrorMess" +
+                    "age = ex.Message,\r\n                    ProblemDetails = new StatusCodeProblemDet" +
+                    "ails(StatusCodes.Status500InternalServerError, ErrorCode.ConfigurationError, ex." +
+                    "Message),\r\n                };\r\n            }\r\n\r\n            response.Products = " +
+                    "products;\r\n            return response;\r\n        }\r\n\r\n        private ProductIte" +
+                    "m MapItem(ProductResponseItem item, ProductServiceMessage request, string langua" +
+                    "ge, bool includeAttributes)\r\n        {\r\n            ProductResponseContent conte" +
+                    "nt = item.Content;\r\n\r\n            return MapItem(item.Id, content, request, lang" +
+                    "uage, includeAttributes);\r\n        }\r\n\r\n        private ProductItem MapItem(Prod" +
+                    "uctResponseChild item, ProductServiceMessage request, string language, bool incl" +
+                    "udeAttributes)\r\n        {\r\n            ProductResponseContent content = item.Con" +
+                    "tent;\r\n\r\n            return MapItem(item.Id, content, request, language, include" +
+                    "Attributes);\r\n        }\r\n\r\n        private ProductItem MapItem(string productId," +
+                    " ProductResponseContent content, ProductServiceMessage request, string language," +
+                    " bool includeAttributes)\r\n        {\r\n            string introduction = content.I" +
+                    "nformation?.FirstOrDefault(c => c.Id == 101)?.Value;\r\n            string summary" +
+                    " = content.Information?.FirstOrDefault(c => c.Id == 102)?.Value;\r\n            va" +
+                    "r guideLanguages = GetLanguages(content.Information);\r\n            string countr" +
+                    "yName = GetCountryName(content.Information?.FirstOrDefault(c => c.Name == \"Count" +
+                    "ry (address)\")?.Value);\r\n\r\n            ExportProductTranslation translation = ne" +
+                    "w ExportProductTranslation\r\n            {\r\n                Language = language.E" +
+                    "quals(\"en-US\",StringComparison.InvariantCultureIgnoreCase) ? \"en\" : language,\r\n " +
+                    "               CountryName = countryName,\r\n                Location = null,\r\n   " +
+                    "             Property = null,\r\n                Provider = content.Categories?.Fi" +
+                    "rstOrDefault(c => c.Id == 36156)?.Path,\r\n                Name = content.Informat" +
+                    "ion?.FirstOrDefault(c => c.Id == 99).Value,\r\n                Description = $\"{in" +
+                    "troduction}\\r\\n{summary}\".Trim(),\r\n                AgeLimit = content.Informatio" +
+                    "n?.FirstOrDefault(c => c.Id == 127)?.Value,\r\n                Attention = Convert" +
+                    "ToStringList(content.Information.FirstOrDefault(c => c.Id == 644)?.Value),\r\n    " +
+                    "            City = content.Information?.FirstOrDefault(c => c.Id == 121)?.Value," +
+                    "\r\n                Directions = ConvertToStringList(content.Information.FirstOrDe" +
+                    "fault(c => c.Id == 103)?.Value),\r\n                GuideLanguages = guideLanguage" +
+                    "s,\r\n                MeetingPoints = new List<string> { content.Information.First" +
+                    "OrDefault(c => c.Id == 1051)?.Value },\r\n                Requirements = ConvertTo" +
+                    "StringList(content.Information.FirstOrDefault(c => c.Id == 643)?.Value),\r\n\r\n    " +
+                    "            //PriceFrom = content.Information.FirstOrDefault(c => c.Id == 1012)?" +
+                    ".Value,\r\n                //Currency = content.Information.FirstOrDefault(c => c." +
+                    "Id == 402)?.Value,\r\n                //PriceMetric= content.Information.FirstOrDe" +
+                    "fault(c => c.Id == 415)?.Value,\r\n                Duration = ConvertToHours(conte" +
+                    "nt.Information.FirstOrDefault(c => c.Id == 929)?.Value),\r\n                Overvi" +
+                    "ew = content.Information.FirstOrDefault(c => c.Id == 101)?.Value,\r\n             " +
+                    "   WhatIsIncluded = ConvertToStringList(content.Information.FirstOrDefault(c => " +
+                    "c.Id == 641)?.Value),\r\n                WhatIsNotIncluded = ConvertToStringList(c" +
+                    "ontent.Information.FirstOrDefault(c => c.Id == 1074)?.Value),\r\n                W" +
+                    "hatToBring = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id ==" +
+                    " 642)?.Value),\r\n\r\n                AvailableFrom = null,// Existing occasions in " +
+                    "the products page. But their API does not support\r\n                AvailableTo =" +
+                    " null,// Existing occasions in the products page. But their API does not support" +
+                    "\r\n                StartTimes = new(),// Existing occasions in the products page." +
+                    " But their API does not support\r\n\r\n                Images = content.Images.Selec" +
+                    "t(c => new ExportProductImage\r\n                {\r\n                    Caption = " +
+                    "c.Description,\r\n                    Ordinal = null,\r\n                    IsMain " +
+                    "= c.IsMain,\r\n                    Sizes = new List<ExportProductImageSize> { new " +
+                    "ExportProductImageSize\r\n                    {\r\n                        Url = \"ht" +
+                    "tps:\" + c.Uri\r\n                    } }\r\n                }).ToList(),\r\n          " +
+                    "      //CancellationPolicies = GetCancellationPoliciesNew(content.Information)\r\n" +
+                    "\r\n            };\r\n\r\n            ProductItem productItem = new ProductItem\r\n     " +
+                    "       {\r\n                CommerceFulfillmentSchemaId = request.CommerceFulfillm" +
+                    "entSchemaId,\r\n                CommerceExternalId = productId,\r\n                C" +
+                    "reated = null,\r\n                Updated = null,\r\n                CountryCode = n" +
+                    "ull, // TODO: See if we can find this somewhere.\r\n                PropertyCode =" +
+                    " null,\r\n                ProductCode = productId,\r\n                Latitude = con" +
+                    "tent.Position?.Latitude,\r\n                Longitude = content.Position?.Longitud" +
+                    "e,\r\n                MinPax = null,// Not in the products page & their API does n" +
+                    "ot support\r\n                MaxPax = null,// Not in the products page & their AP" +
+                    "I does not support\r\n                Translations = new List<ExportProductTransla" +
+                    "tion> { translation },\r\n                ProductType = \"Child\", //Specify the pro" +
+                    "duct is Parent or Child. For Activities, it is Child\r\n                ProductSou" +
+                    "rce = \"Activity\", //This specify the main source, ie the Category the product be" +
+                    "longs to. Eg: Activity,Accommodation\r\n            };\r\n\r\n            //VerifyFiel" +
+                    "ds(productItem.Translations);\r\n            if (includeAttributes)\r\n            {" +
+                    "\r\n                List<EntityAttribute> attributes = new List<EntityAttribute>\r\n" +
+                    "                {\r\n                    new EntityAttribute\r\n                    " +
+                    "{\r\n                        Name = \"OVERVIEW\",\r\n                        Value = c" +
+                    "ontent.Information.SingleOrDefault(c => c.Name == \"Introduksjon\")?.Value\r\n      " +
+                    "              },\r\n                    new EntityAttribute\r\n                    {" +
+                    "\r\n                        Name = \"DESCRIPTION\",\r\n                        Value =" +
+                    " content.Information.SingleOrDefault(c => c.Name == \"Beskrivelse\")?.Value\r\n     " +
+                    "               },\r\n                    new EntityAttribute\r\n                    " +
+                    "{\r\n                        Name = \"LANGUAGE\",\r\n                        Value = l" +
+                    "anguage\r\n                    },\r\n                    new EntityAttribute\r\n      " +
+                    "              {\r\n                        Name = \"POINT_OF_SALES_ID\",\r\n          " +
+                    "              Value = EntityAttributeHelper.GetAttributeValueAsList(request.Sear" +
+                    "chAttributes, \"POINTOFSALESID\").FirstOrDefault()\r\n                    },\r\n      " +
+                    "              new EntityAttribute\r\n                    {\r\n                      " +
+                    "  Name = \"CURRENCY\",\r\n                        Value = content.Information.Single" +
+                    "OrDefault(c => c.Name == \"Valuta\")?.Value\r\n                    },\r\n             " +
+                    "       new EntityAttribute\r\n                    {\r\n                        Name " +
+                    "= \"SUPPLIER_PRODUCT_ID\",\r\n                        Value = productId\r\n           " +
                     "         },\r\n                    new EntityAttribute\r\n                    {\r\n   " +
-                    "                     Name = \"GUIDE_LANGUAGES\",\r\n                        Value = " +
-                    "string.Join(\",\", guideLanguages)\r\n                    },\r\n                    ne" +
-                    "w EntityAttribute\r\n                    {\r\n                        Name = \"DURATI" +
-                    "ON\",\r\n                        Value = content.Information.SingleOrDefault(c => c" +
-                    ".Name == \"Duration\")?.Value\r\n                    },\r\n                    new Ent" +
-                    "ityAttribute\r\n                    {\r\n                        Name = \"MEETING_POI" +
-                    "NT\",\r\n                        Value = content.Information.SingleOrDefault(c => c" +
-                    ".Name == \"Meeting point\")?.Value\r\n                    },\r\n                    ne" +
-                    "w EntityAttribute\r\n                    {\r\n                        Name = \"DIRECT" +
-                    "IONS\",\r\n                        Value = content.Information.SingleOrDefault(c =>" +
-                    " c.Name == \"Veibeskrivelse\")?.Value\r\n                    },\r\n                   " +
-                    " new EntityAttribute\r\n                    {\r\n                        Name = \"PRI" +
-                    "CE_TYPE\",\r\n                        Value = content.Information.SingleOrDefault(c" +
-                    " => c.Name == \"Prisbeskrivning\")?.Value\r\n                    },\r\n               " +
+                    "                     Name = \"WHAT_TO_BRING\",\r\n                        Value = co" +
+                    "ntent.Information.SingleOrDefault(c => c.Name == \"What is not included\")?.Value\r" +
+                    "\n                    },\r\n                    new EntityAttribute\r\n              " +
+                    "      {\r\n                        Name = \"GUIDE_LANGUAGES\",\r\n                    " +
+                    "    Value = string.Join(\",\", guideLanguages)\r\n                    },\r\n          " +
+                    "          new EntityAttribute\r\n                    {\r\n                        Na" +
+                    "me = \"DURATION\",\r\n                        Value = content.Information.SingleOrDe" +
+                    "fault(c => c.Name == \"Duration\")?.Value\r\n                    },\r\n               " +
                     "     new EntityAttribute\r\n                    {\r\n                        Name = " +
-                    "\"UPDATED\",\r\n                        Value = DateTime.Now.ToString()\r\n           " +
-                    "         },\r\n                    new EntityAttribute\r\n                    {\r\n   " +
-                    "                     Name = \"COUNTRY_CODE\",\r\n                        // Note tha" +
-                    "t this returns a three digit code which is\r\n                        // not pre-d" +
-                    "efined anywhere that I can see.\r\n                        Value = content.Informa" +
-                    "tion.SingleOrDefault(c => c.Name == \"Country (address)\")?.Value\r\n               " +
-                    "     },\r\n                    new EntityAttribute\r\n                    {\r\n       " +
-                    "                 Name = \"COUNTRY_NAME\",\r\n                        Value = country" +
-                    "Name\r\n                    },\r\n                    new EntityAttribute\r\n         " +
-                    "           {\r\n                        Name = \"LOCATION\",\r\n                      " +
-                    "  Value = content.Information.SingleOrDefault(c => c.Name == \"City (address)\")?." +
-                    "Value\r\n                    }\r\n                };\r\n\r\n                // Get cance" +
-                    "llation policies.\r\n                if (content.Information.Any(c => c.Id == 112)" +
-                    ")\r\n                    attributes.AddRange(GetCancellationPolicies(content.Infor" +
-                    "mation));\r\n\r\n                productItem.ProductAttributes = attributes\r\n       " +
-                    "             .Where(c => !string.IsNullOrEmpty(c.Value))\r\n                    .T" +
-                    "oList();\r\n            }\r\n\r\n            return productItem;\r\n        }\r\n\r\n       " +
-                    " private List<string> GetLanguages(List<ProductResponseInformation> information)" +
-                    "\r\n        {\r\n            bool svensk = information.Any(c => c.Name == \"Svensk\" &" +
-                    "& c.Value == \"True\");\r\n            bool engelsk = information.Any(c => c.Name ==" +
-                    " \"Engelsk\" && c.Value == \"True\");\r\n            bool tysk = information.Any(c => " +
-                    "c.Name == \"Tysk\" && c.Value == \"True\");\r\n            bool fransk = information.A" +
-                    "ny(c => c.Name == \"Fransk\" && c.Value == \"True\");\r\n            bool spansk = inf" +
-                    "ormation.Any(c => c.Name == \"Spansk\" && c.Value == \"True\");\r\n            bool no" +
-                    "rsk = information.Any(c => c.Name == \"Norsk\" && c.Value == \"True\");\r\n           " +
-                    " bool finsk = information.Any(c => c.Name == \"Finsk\" && c.Value == \"True\");\r\n   " +
-                    "         bool kinesisk = information.Any(c => c.Name == \"Kinesisk\" && c.Value ==" +
-                    " \"True\");\r\n            bool russisk = information.Any(c => c.Name == \"Russisk\" &" +
-                    "& c.Value == \"True\");\r\n            bool dansk = information.Any(c => c.Name == \"" +
-                    "Dansk\" && c.Value == \"True\");\r\n\r\n            List<string> languages = new();\r\n  " +
-                    "          if (svensk) languages.Add(\"Swedish\");\r\n            if (engelsk) langua" +
-                    "ges.Add(\"English\");\r\n            if (tysk) languages.Add(\"German\");\r\n           " +
-                    " if (spansk) languages.Add(\"Spanish\");\r\n            if (norsk) languages.Add(\"No" +
-                    "rwegian\");\r\n            if (finsk) languages.Add(\"Finnish\");\r\n            if (ki" +
-                    "nesisk) languages.Add(\"Chinese\");\r\n            if (russisk) languages.Add(\"Russi" +
-                    "an\");\r\n            if (dansk) languages.Add(\"Danish\");\r\n\r\n            return lan" +
-                    "guages;\r\n        }\r\n\r\n        public List<CancellationPolicy> GetCancellationPol" +
-                    "iciesNew(List<ProductResponseInformation> information)\r\n        {\r\n            s" +
-                    "tring cancellationPolicy = information?.FirstOrDefault(c => c.Id == 112)?.Value;" +
-                    " // \"Full refund if canceled 7 days or more before departure\"\r\n\r\n            Lis" +
-                    "t<CancellationPolicy> policyList = new List<CancellationPolicy>();\r\n            " +
-                    "if (string.IsNullOrEmpty(cancellationPolicy))\r\n                return policyList" +
-                    ";\r\n\r\n            var lines = cancellationPolicy.Split(new string[] { Environment" +
-                    ".NewLine }, StringSplitOptions.None);\r\n\r\n            foreach (var line in lines." +
-                    "Where(l => !string.IsNullOrEmpty(l)))\r\n            {\r\n                double per" +
-                    "centage = 0;\r\n                int upperLimitDuration = 0;\r\n                int l" +
-                    "owerLimitDuration = 0;\r\n                double upperLimitDurationInDays = 0;\r\n  " +
-                    "              double lowerLimitDurationInDays = 0;\r\n                bool isLessT" +
-                    "han = false;\r\n                string unit = string.Empty;\r\n                strin" +
-                    "g units = string.Empty;\r\n\r\n\r\n                CancellationPolicy policy = null;\r\n" +
-                    "                try\r\n                {\r\n                    var match = Regex.Ma" +
-                    "tch(line, @\"(\\d+)%\");\r\n                    if (match.Success && match.Groups[1] " +
-                    "!= null)\r\n                        percentage = 100 - Convert.ToDouble(match.Grou" +
-                    "ps[1].Value);\r\n\r\n                    if (line.Contains(\"Full refund\", StringComp" +
-                    "arison.InvariantCultureIgnoreCase) || line.Contains(\"Free cancellation\", StringC" +
-                    "omparison.InvariantCultureIgnoreCase))\r\n                        percentage = 0;\r" +
-                    "\n\r\n                    if (line.Contains(\"no refund\", StringComparison.Invariant" +
-                    "CultureIgnoreCase) || line.Contains(\"Cancellation fee of 100 %\", StringCompariso" +
-                    "n.InvariantCultureIgnoreCase)\r\n                        || line.Contains(\"Cancell" +
-                    "ation fee of 100%\", StringComparison.InvariantCultureIgnoreCase))\r\n             " +
-                    "           percentage = 100;\r\n\r\n                    isLessThan = line.Contains(\"" +
-                    "less\", StringComparison.InvariantCultureIgnoreCase);\r\n\r\n                    matc" +
-                    "h = Regex.Match(line, @\"(\\d+)\\s+days\");\r\n                    if (match.Success &" +
-                    "& match.Groups[1] != null)\r\n                    {\r\n                        unit " +
-                    "= \"days\";\r\n                        if (!isLessThan)\r\n                        {\r\n" +
-                    "                            lowerLimitDurationInDays = lowerLimitDuration = Conv" +
-                    "ert.ToInt32(match.Groups[1].Value);\r\n                        }\r\n\r\n              " +
-                    "          else\r\n                        {\r\n                            upperLimi" +
-                    "tDurationInDays = upperLimitDuration = Convert.ToInt32(match.Groups[1].Value);\r\n" +
-                    "                        }\r\n                    }\r\n\r\n                    match = " +
-                    "Regex.Match(line, @\"(\\d+)\\s+hours\");\r\n                    if (match.Success && m" +
-                    "atch.Groups[1] != null)\r\n                    {\r\n                        unit = \"" +
-                    "hours\";\r\n                        if (!isLessThan)\r\n                        {\r\n  " +
-                    "                          lowerLimitDuration = Convert.ToInt32(match.Groups[1].V" +
-                    "alue);\r\n                            lowerLimitDurationInDays = lowerLimitDuratio" +
-                    "n / 24;\r\n                        }\r\n                        else\r\n              " +
-                    "          {\r\n                            upperLimitDuration = Convert.ToInt32(ma" +
-                    "tch.Groups[1].Value);\r\n                            upperLimitDurationInDays = up" +
-                    "perLimitDuration / 24;\r\n                        }\r\n                    }\r\n\r\n    " +
-                    "            }\r\n                catch\r\n                {\r\n                    per" +
-                    "centage = 0;\r\n                    units = string.Empty;\r\n                }\r\n    " +
-                    "            finally\r\n                {\r\n                    policy = new Cancell" +
-                    "ationPolicy\r\n                    {\r\n                        Unit = unit,\r\n      " +
-                    "                  UpperLimitDuration = upperLimitDuration,\r\n                    " +
-                    "    UpperLimitDurationInDays = upperLimitDurationInDays,\r\n                      " +
-                    "  LowerLimitDuration = lowerLimitDuration,\r\n                        LowerLimitDu" +
-                    "rationInDays = lowerLimitDurationInDays,\r\n                        Percentage = p" +
-                    "ercentage,\r\n                        FullDescription = line,\r\n                   " +
-                    "     PercentageText = $\"{percentage}%\",\r\n                    };\r\n               " +
-                    " }\r\n\r\n                if (policy != null)\r\n                    policyList.Add(po" +
-                    "licy);\r\n            }\r\n\r\n            return SortCancellationPolicies(policyList)" +
-                    ";\r\n        }\r\n\r\n        private List<CancellationPolicy> SortCancellationPolicie" +
-                    "s(List<CancellationPolicy> cancellationPolicies)\r\n        {\r\n            if (!ca" +
-                    "ncellationPolicies.Any())\r\n                return cancellationPolicies;\r\n\r\n     " +
-                    "       int index = 0;\r\n            int? lastValue = int.MaxValue;\r\n\r\n           " +
-                    " var policiesWithLowerLimit = cancellationPolicies.Where(c => c.LowerLimitDurati" +
-                    "onInDays > 0 && c.UpperLimitDurationInDays == 0)\r\n                .OrderByDescen" +
-                    "ding(c => c.LowerLimitDurationInDays).ToList();\r\n\r\n            string lastUnit =" +
-                    " policiesWithLowerLimit.Any() ? policiesWithLowerLimit.First().Unit : string.Emp" +
-                    "ty;\r\n\r\n            foreach (var policy in policiesWithLowerLimit)\r\n            {" +
-                    "\r\n                index = index + 1;\r\n                policy.Index = index;\r\n\r\n " +
-                    "               if (policy.Unit.Equals(\"hours\"))\r\n                {\r\n            " +
-                    "        if (lastUnit.Equals(\"Days\"))\r\n                    {\r\n                   " +
-                    "     policy.UpperLimitDuration = lastValue * 24;\r\n                        policy" +
-                    ".UpperLimitDurationInDays = lastValue;\r\n                    }\r\n                 " +
-                    "   else\r\n                    {\r\n                        policy.UpperLimitDuratio" +
-                    "n = lastValue;\r\n                        policy.UpperLimitDurationInDays = lastVa" +
-                    "lue / 24;\r\n                    }\r\n                }\r\n                else\r\n     " +
-                    "           {\r\n                    if (lastUnit.Equals(\"hours\"))\r\n               " +
-                    "     {\r\n                        policy.UpperLimitDuration = lastValue / 24;\r\n   " +
-                    "                     policy.UpperLimitDurationInDays = lastValue / 24;\r\n        " +
-                    "            }\r\n                    else\r\n                    {\r\n                " +
-                    "        policy.UpperLimitDuration = lastValue;\r\n                        policy.U" +
-                    "pperLimitDurationInDays = lastValue;\r\n                    }\r\n                }\r\n" +
-                    "\r\n                policy.UpperLimitDurationText = policy.UpperLimitDuration == i" +
-                    "nt.MaxValue ? string.Empty : $\"{policy.UpperLimitDuration} {policy.Unit}\";\r\n    " +
-                    "            policy.LowerLimitDurationText = $\"{policy.LowerLimitDuration} {polic" +
-                    "y.Unit}\";\r\n\r\n                lastValue = policy.LowerLimitDuration;\r\n           " +
-                    "     lastUnit = policy.Unit;\r\n\r\n                if (policy.UpperLimitDuration.Va" +
-                    "lue == int.MaxValue)\r\n                    policy.UpperLimitDuration = null;\r\n   " +
-                    "         }\r\n\r\n            var policiesWithUpperLimit = cancellationPolicies.Wher" +
-                    "e(c => c.UpperLimitDurationInDays > 0 && c.LowerLimitDurationInDays == 0)\r\n     " +
-                    "           .OrderByDescending(c => c.UpperLimitDurationInDays).ToList();\r\n\r\n    " +
-                    "        if (lastUnit == string.Empty)\r\n                lastUnit = policiesWithUp" +
-                    "perLimit.Any() ? policiesWithUpperLimit.First().Unit : string.Empty;\r\n          " +
-                    "  foreach (var policy in policiesWithUpperLimit)\r\n            {\r\n               " +
-                    " index = index + 1;\r\n                policy.Index = index;\r\n\r\n\r\n                " +
-                    "var lastValueInDays = lastUnit.Equals(\"hours\") ? lastValue / 24 : lastValue;\r\n  " +
-                    "              if (lastValueInDays == policy.UpperLimitDurationInDays)\r\n         " +
-                    "           lastValue = 0;\r\n\r\n                if (policy.Unit.Equals(\"hours\"))\r\n " +
-                    "               {\r\n                    if (lastUnit.Equals(\"Days\"))\r\n            " +
-                    "        {\r\n                        policy.LowerLimitDuration = lastValue * 24;\r\n" +
-                    "                        policy.LowerLimitDurationInDays = lastValue;\r\n          " +
-                    "          }\r\n                    else\r\n                    {\r\n                  " +
-                    "      policy.LowerLimitDuration = lastValue;\r\n                        policy.Low" +
-                    "erLimitDurationInDays = lastValue / 24;\r\n                    }\r\n                " +
-                    "}\r\n                else\r\n                {\r\n                    if (lastUnit.Equ" +
-                    "als(\"hours\"))\r\n                    {\r\n                        policy.LowerLimitD" +
-                    "uration = lastValue / 24;\r\n                        policy.LowerLimitDurationInDa" +
-                    "ys = lastValue / 24;\r\n                    }\r\n                    else\r\n         " +
-                    "           {\r\n                        policy.LowerLimitDuration = lastValue;\r\n  " +
-                    "                      policy.LowerLimitDurationInDays = lastValue;\r\n            " +
-                    "        }\r\n                }\r\n\r\n                policy.UpperLimitDurationText = " +
-                    "$\"{policy.UpperLimitDuration} {policy.Unit}\";\r\n                policy.LowerLimit" +
-                    "DurationText = $\"{policy.LowerLimitDuration} {policy.Unit}\";\r\n\r\n                " +
-                    "lastValue = policy.UpperLimitDuration;\r\n\r\n                if (policy.UpperLimitD" +
-                    "uration.Value == int.MaxValue)\r\n                    policy.UpperLimitDuration = " +
-                    "null;\r\n            }\r\n\r\n            List<CancellationPolicy> sortedPolicyList = " +
-                    "cancellationPolicies.OrderBy(c => c.Index).ToList();\r\n\r\n            if (sortedPo" +
-                    "licyList.Count == 1 && sortedPolicyList.FirstOrDefault().Percentage == 100)\r\n   " +
-                    "         {\r\n                var policy = sortedPolicyList.FirstOrDefault();\r\n   " +
-                    "             policy.Percentage = 0;\r\n                policy.PercentageText = \"0%" +
-                    "\";\r\n                var upperLimitation = policy.UpperLimitDuration;\r\n          " +
-                    "      var lowerLimitation = policy.LowerLimitDuration;\r\n\r\n                policy" +
-                    ".UpperLimitDuration = null;\r\n                policy.LowerLimitDuration = upperLi" +
-                    "mitation;\r\n                policy.UpperLimitDurationText = $\"{policy.UpperLimitD" +
-                    "uration} {policy.Unit}\";\r\n                policy.LowerLimitDurationText = $\"{pol" +
-                    "icy.LowerLimitDuration} {policy.Unit}\";\r\n\r\n            }\r\n            else if (s" +
-                    "ortedPolicyList.Count == 2)\r\n            {\r\n                var noRefundExists =" +
-                    " sortedPolicyList.Any(s => s.Percentage == 100);\r\n                var fullRefund" +
-                    "Exists = sortedPolicyList.Any(s => s.Percentage == 0);\r\n                if (noRe" +
-                    "fundExists && fullRefundExists)\r\n                {\r\n                    sortedPo" +
-                    "licyList.Remove(sortedPolicyList.FirstOrDefault(s => s.Percentage == 100));\r\n   " +
-                    "             }\r\n            }\r\n\r\n            return sortedPolicyList;\r\n        }" +
-                    "\r\n\r\n        /// <summary>\r\n        /// Gets cancellation policies from product r" +
-                    "esponses.\r\n        /// </summary>\r\n        /// <remarks>\r\n        /// Attempts t" +
-                    "o parse the policies for grouping and for\r\n        /// presenting a uniform list" +
-                    "ing.\r\n        /// </remarks>\r\n        /// <param name=\"information\"></param>\r\n  " +
-                    "      /// <returns>A list of cancellation policy attributes.</returns>\r\n        " +
-                    "private List<EntityAttribute> GetCancellationPolicies(List<ProductResponseInform" +
-                    "ation> information)\r\n        {\r\n            string policyValue = information.Sin" +
-                    "gle(c => c.Id == 112).Value;\r\n            List<string> policies = policyValue.Sp" +
-                    "lit(\"\\r\\n\").ToList();\r\n\r\n            List<EntityAttribute> policyAttributes = ne" +
-                    "w List<EntityAttribute>();\r\n\r\n            foreach (var policy in policies)\r\n    " +
-                    "        {\r\n                int hourThreshold;\r\n                string percentage" +
-                    "Value;\r\n\r\n                if (policy.Contains(\"hours\") || policy.Contains(\"timer" +
-                    "\"))\r\n                    (hourThreshold, percentageValue) = ParseFromHours(polic" +
-                    "y);\r\n                else if (policy.Contains(\"days\") || policy.Contains(\"dager\"" +
-                    "))\r\n                    (hourThreshold, percentageValue) = ParseFromDays(policy)" +
-                    ";\r\n                else\r\n                {\r\n                    hourThreshold = " +
-                    "0;\r\n                    percentageValue = string.Empty;\r\n                }\r\n\r\n  " +
-                    "              string attribute;\r\n                if (hourThreshold >= 168)\r\n    " +
-                    "                attribute = ProductAttributeNames.CANCELLATION_168H;\r\n          " +
-                    "      if (hourThreshold >= 72 && hourThreshold < 168)\r\n                    attri" +
-                    "bute = ProductAttributeNames.CANCELLATION_72H;\r\n                if (hourThreshol" +
-                    "d >= 48 && hourThreshold < 72)\r\n                    attribute = ProductAttribute" +
-                    "Names.CANCELLATION_48H;\r\n                if (hourThreshold >= 24 && hourThreshol" +
-                    "d < 48)\r\n                    attribute = ProductAttributeNames.CANCELLATION_24H;" +
-                    "\r\n                else\r\n                    attribute = ProductAttributeNames.CA" +
-                    "NCELLATION_0H;\r\n\r\n                percentageValue = percentageValue.Replace(\" \"," +
-                    " \"\");\r\n\r\n                policyAttributes.Add(new EntityAttribute\r\n             " +
-                    "   {\r\n                    Name = attribute,\r\n                    Value = string." +
-                    "IsNullOrEmpty(percentageValue) ? policy : $\"{percentageValue}: {policy}\"\r\n      " +
-                    "          }); ;\r\n            }\r\n\r\n            policyAttributes = policyAttribute" +
-                    "s\r\n                .GroupBy(c => c.Name)\r\n                .Select(c => new Entit" +
-                    "yAttribute(c.Key, string.Join(\"\\r\\n\", c.Select(c => c.Value))))\r\n               " +
-                    " .ToList();\r\n\r\n            return policyAttributes;\r\n        }\r\n\r\n        privat" +
-                    "e (int, string) ParseFromHours(string policy)\r\n        {\r\n            (List<int>" +
-                    " timeThresholds, string percentage) = GetValues(policy);\r\n\r\n            return t" +
-                    "imeThresholds.Any() ? (timeThresholds.Min(), percentage) : (0, percentage);\r\n   " +
-                    "     }\r\n\r\n        private (int, string) ParseFromDays(string policy)\r\n        {\r" +
-                    "\n            (List<int> timeThresholds, string percentage) = GetValues(policy);\r" +
-                    "\n\r\n            return timeThresholds.Any() ? ((timeThresholds.Min() * 24), perce" +
-                    "ntage) : (0, percentage);\r\n        }\r\n\r\n        private (List<int>, string) GetV" +
-                    "alues(string policy)\r\n        {\r\n            MatchCollection matches = Regex.Mat" +
-                    "ches(policy, @\"\\d+\\s*%?\");\r\n\r\n            List<int> numbers = new List<int>();\r\n" +
-                    "            string percentage = string.Empty;\r\n\r\n            foreach (Match matc" +
-                    "h in matches)\r\n                foreach (Capture capture in match.Captures)\r\n    " +
-                    "                if (match.Value.Contains(\'%\'))\r\n                        percenta" +
-                    "ge = match.Value;\r\n                    else\r\n                        numbers.Add" +
-                    "(int.Parse(match.Value));\r\n\r\n            return (numbers, percentage);\r\n        " +
-                    "}\r\n\r\n        private string GetCountryName(string id)\r\n        {\r\n            Co" +
-                    "untryService countryService = new CountryService();\r\n            var country = c" +
-                    "ountryService.Countries.FirstOrDefault(c => c.Key.Equals(id));\r\n\r\n            re" +
-                    "turn country.Value ?? string.Empty;\r\n        }\r\n\r\n        private static double?" +
-                    " ConvertToHours(string time)\r\n        {\r\n            if (string.IsNullOrEmpty(ti" +
-                    "me))\r\n                return null;\r\n\r\n            if (time.Contains(\" each way\"," +
-                    " StringComparison.InvariantCultureIgnoreCase))\r\n            {\r\n                t" +
-                    "ime = time.Replace(\" each way\", \"\");\r\n            }\r\n\r\n            string[] part" +
-                    "s = time.Split(\' \');\r\n            double? convertedHours = 0;\r\n            switc" +
-                    "h (parts.Length)\r\n            {\r\n                case 2 when parts[1] == \"time\":" +
-                    "\r\n                case 2 when parts[1] == \"hour\":\r\n                    converted" +
-                    "Hours = double.Parse(parts[0]);\r\n                    break;\r\n                cas" +
-                    "e 2:\r\n                {\r\n                    if (parts[1] == \"minutes\")\r\n       " +
-                    "             {\r\n                        convertedHours = double.Parse(parts[0]) " +
-                    "/ 60;\r\n                    }\r\n\r\n                    break;\r\n                }\r\n " +
-                    "               case 4:\r\n                {\r\n                    if ((parts[1] == " +
-                    "\"hour\" && parts[3] == \"minutes\") || (parts[1] == \"hours\" && parts[3] == \"minutes" +
-                    "\"))\r\n                    {\r\n                        double hours = double.Parse(" +
-                    "parts[0]);\r\n                        double minutes = double.Parse(parts[2]);\r\n\r\n" +
-                    "                        convertedHours = hours + (minutes / 60);\r\n              " +
-                    "      }\r\n\r\n                    break;\r\n                }\r\n                case 5" +
-                    ":\r\n                {\r\n                    if ((parts[1] == \"hour\" && parts[4] ==" +
-                    " \"minutes\") || (parts[1] == \"hours\" && parts[4] == \"minutes\"))\r\n                " +
-                    "    {\r\n                        double hours = double.Parse(parts[0]);\r\n         " +
-                    "               double minutes = double.Parse(parts[3]);\r\n\r\n                     " +
-                    "   convertedHours = hours + (minutes / 60);\r\n                    }\r\n\r\n          " +
-                    "          break;\r\n                }\r\n                case 1:\r\n                {\r" +
-                    "\n                    if (time.Contains(\',\'))\r\n                        time = tim" +
-                    "e.Replace(\',\', \'.\');\r\n                    if (time.EndsWith(\"h\"))\r\n             " +
-                    "       {\r\n                        convertedHours = double.Parse(time.Replace(\"h\"" +
-                    ", \"\"));\r\n                    }\r\n                    else if (time.EndsWith(\"H\"))" +
-                    "\r\n                    {\r\n                        convertedHours = double.Parse(t" +
-                    "ime.Replace(\"H\", \"\"));\r\n                    }\r\n                    else if (time" +
-                    ".EndsWith(\"d\"))\r\n                    {\r\n                        convertedHours =" +
-                    " double.Parse(time.Replace(\"d\", \"\")) * 24;\r\n                    }\r\n             " +
-                    "       else if (double.TryParse(time, out var temp))\r\n                    {\r\n   " +
-                    "                     convertedHours = temp;\r\n                    }\r\n            " +
-                    "        else if (time.Equals(\"Variable\", StringComparison.InvariantCultureIgnore" +
-                    "Case))\r\n                    {\r\n                        convertedHours = null;\r\n " +
-                    "                   }\r\n\r\n                    break;\r\n                }\r\n         " +
-                    "   }\r\n            if (convertedHours == 0)\r\n                convertedHours = nul" +
-                    "l;\r\n\r\n            return convertedHours;\r\n        }\r\n    }\r\n}\r\n");
+                    "\"MEETING_POINT\",\r\n                        Value = content.Information.SingleOrDe" +
+                    "fault(c => c.Name == \"Meeting point\")?.Value\r\n                    },\r\n          " +
+                    "          new EntityAttribute\r\n                    {\r\n                        Na" +
+                    "me = \"DIRECTIONS\",\r\n                        Value = content.Information.SingleOr" +
+                    "Default(c => c.Name == \"Veibeskrivelse\")?.Value\r\n                    },\r\n       " +
+                    "             new EntityAttribute\r\n                    {\r\n                       " +
+                    " Name = \"PRICE_TYPE\",\r\n                        Value = content.Information.Singl" +
+                    "eOrDefault(c => c.Name == \"Prisbeskrivning\")?.Value\r\n                    },\r\n   " +
+                    "                 new EntityAttribute\r\n                    {\r\n                   " +
+                    "     Name = \"UPDATED\",\r\n                        Value = DateTime.Now.ToString()\r" +
+                    "\n                    },\r\n                    new EntityAttribute\r\n              " +
+                    "      {\r\n                        Name = \"COUNTRY_CODE\",\r\n                       " +
+                    " // Note that this returns a three digit code which is\r\n                        " +
+                    "// not pre-defined anywhere that I can see.\r\n                        Value = con" +
+                    "tent.Information.SingleOrDefault(c => c.Name == \"Country (address)\")?.Value\r\n   " +
+                    "                 },\r\n                    new EntityAttribute\r\n                  " +
+                    "  {\r\n                        Name = \"COUNTRY_NAME\",\r\n                        Val" +
+                    "ue = countryName\r\n                    },\r\n                    new EntityAttribut" +
+                    "e\r\n                    {\r\n                        Name = \"LOCATION\",\r\n          " +
+                    "              Value = content.Information.SingleOrDefault(c => c.Name == \"City (" +
+                    "address)\")?.Value\r\n                    }\r\n                };\r\n\r\n                " +
+                    "// Get cancellation policies.\r\n                if (content.Information.Any(c => " +
+                    "c.Id == 112))\r\n                    attributes.AddRange(GetCancellationPolicies(c" +
+                    "ontent.Information));\r\n\r\n                productItem.ProductAttributes = attribu" +
+                    "tes\r\n                    .Where(c => !string.IsNullOrEmpty(c.Value))\r\n          " +
+                    "          .ToList();\r\n            }\r\n\r\n            return productItem;\r\n        " +
+                    "}\r\n\r\n        private List<string> GetLanguages(List<ProductResponseInformation> " +
+                    "information)\r\n        {\r\n            bool svensk = information.Any(c => c.Name =" +
+                    "= \"Svensk\" && c.Value == \"True\");\r\n            bool engelsk = information.Any(c " +
+                    "=> c.Name == \"Engelsk\" && c.Value == \"True\");\r\n            bool tysk = informati" +
+                    "on.Any(c => c.Name == \"Tysk\" && c.Value == \"True\");\r\n            bool fransk = i" +
+                    "nformation.Any(c => c.Name == \"Fransk\" && c.Value == \"True\");\r\n            bool " +
+                    "spansk = information.Any(c => c.Name == \"Spansk\" && c.Value == \"True\");\r\n       " +
+                    "     bool norsk = information.Any(c => c.Name == \"Norsk\" && c.Value == \"True\");\r" +
+                    "\n            bool finsk = information.Any(c => c.Name == \"Finsk\" && c.Value == \"" +
+                    "True\");\r\n            bool kinesisk = information.Any(c => c.Name == \"Kinesisk\" &" +
+                    "& c.Value == \"True\");\r\n            bool russisk = information.Any(c => c.Name ==" +
+                    " \"Russisk\" && c.Value == \"True\");\r\n            bool dansk = information.Any(c =>" +
+                    " c.Name == \"Dansk\" && c.Value == \"True\");\r\n\r\n            List<string> languages " +
+                    "= new();\r\n            if (svensk) languages.Add(\"Swedish\");\r\n            if (eng" +
+                    "elsk) languages.Add(\"English\");\r\n            if (tysk) languages.Add(\"German\");\r" +
+                    "\n            if (spansk) languages.Add(\"Spanish\");\r\n            if (norsk) langu" +
+                    "ages.Add(\"Norwegian\");\r\n            if (finsk) languages.Add(\"Finnish\");\r\n      " +
+                    "      if (kinesisk) languages.Add(\"Chinese\");\r\n            if (russisk) language" +
+                    "s.Add(\"Russian\");\r\n            if (dansk) languages.Add(\"Danish\");\r\n\r\n          " +
+                    "  return languages;\r\n        }\r\n\r\n        public List<CancellationPolicy> GetCan" +
+                    "cellationPoliciesNew(List<ProductResponseInformation> information)\r\n        {\r\n " +
+                    "           string cancellationPolicy = information?.FirstOrDefault(c => c.Id == " +
+                    "112)?.Value; // \"Full refund if canceled 7 days or more before departure\"\r\n\r\n   " +
+                    "         List<CancellationPolicy> policyList = new List<CancellationPolicy>();\r\n" +
+                    "            if (string.IsNullOrEmpty(cancellationPolicy))\r\n                retur" +
+                    "n policyList;\r\n\r\n            var lines = cancellationPolicy.Split(new string[] {" +
+                    " Environment.NewLine }, StringSplitOptions.None);\r\n\r\n            foreach (var li" +
+                    "ne in lines.Where(l => !string.IsNullOrEmpty(l)))\r\n            {\r\n              " +
+                    "  double percentage = 0;\r\n                int upperLimitDuration = 0;\r\n         " +
+                    "       int lowerLimitDuration = 0;\r\n                double upperLimitDurationInD" +
+                    "ays = 0;\r\n                double lowerLimitDurationInDays = 0;\r\n                " +
+                    "bool isLessThan = false;\r\n                string unit = string.Empty;\r\n         " +
+                    "       string units = string.Empty;\r\n\r\n\r\n                CancellationPolicy poli" +
+                    "cy = null;\r\n                try\r\n                {\r\n                    var matc" +
+                    "h = Regex.Match(line, @\"(\\d+)%\");\r\n                    if (match.Success && matc" +
+                    "h.Groups[1] != null)\r\n                        percentage = 100 - Convert.ToDoubl" +
+                    "e(match.Groups[1].Value);\r\n\r\n                    if (line.Contains(\"Full refund\"" +
+                    ", StringComparison.InvariantCultureIgnoreCase) || line.Contains(\"Free cancellati" +
+                    "on\", StringComparison.InvariantCultureIgnoreCase))\r\n                        perc" +
+                    "entage = 0;\r\n\r\n                    if (line.Contains(\"no refund\", StringComparis" +
+                    "on.InvariantCultureIgnoreCase) || line.Contains(\"Cancellation fee of 100 %\", Str" +
+                    "ingComparison.InvariantCultureIgnoreCase)\r\n                        || line.Conta" +
+                    "ins(\"Cancellation fee of 100%\", StringComparison.InvariantCultureIgnoreCase))\r\n " +
+                    "                       percentage = 100;\r\n\r\n                    isLessThan = lin" +
+                    "e.Contains(\"less\", StringComparison.InvariantCultureIgnoreCase);\r\n\r\n            " +
+                    "        match = Regex.Match(line, @\"(\\d+)\\s+days\");\r\n                    if (mat" +
+                    "ch.Success && match.Groups[1] != null)\r\n                    {\r\n                 " +
+                    "       unit = \"days\";\r\n                        if (!isLessThan)\r\n               " +
+                    "         {\r\n                            lowerLimitDurationInDays = lowerLimitDur" +
+                    "ation = Convert.ToInt32(match.Groups[1].Value);\r\n                        }\r\n\r\n  " +
+                    "                      else\r\n                        {\r\n                         " +
+                    "   upperLimitDurationInDays = upperLimitDuration = Convert.ToInt32(match.Groups[" +
+                    "1].Value);\r\n                        }\r\n                    }\r\n\r\n                " +
+                    "    match = Regex.Match(line, @\"(\\d+)\\s+hours\");\r\n                    if (match." +
+                    "Success && match.Groups[1] != null)\r\n                    {\r\n                    " +
+                    "    unit = \"hours\";\r\n                        if (!isLessThan)\r\n                 " +
+                    "       {\r\n                            lowerLimitDuration = Convert.ToInt32(match" +
+                    ".Groups[1].Value);\r\n                            lowerLimitDurationInDays = lower" +
+                    "LimitDuration / 24;\r\n                        }\r\n                        else\r\n  " +
+                    "                      {\r\n                            upperLimitDuration = Conver" +
+                    "t.ToInt32(match.Groups[1].Value);\r\n                            upperLimitDuratio" +
+                    "nInDays = upperLimitDuration / 24;\r\n                        }\r\n                 " +
+                    "   }\r\n\r\n                }\r\n                catch\r\n                {\r\n           " +
+                    "         percentage = 0;\r\n                    units = string.Empty;\r\n           " +
+                    "     }\r\n                finally\r\n                {\r\n                    policy =" +
+                    " new CancellationPolicy\r\n                    {\r\n                        Unit = u" +
+                    "nit,\r\n                        UpperLimitDuration = upperLimitDuration,\r\n        " +
+                    "                UpperLimitDurationInDays = upperLimitDurationInDays,\r\n          " +
+                    "              LowerLimitDuration = lowerLimitDuration,\r\n                        " +
+                    "LowerLimitDurationInDays = lowerLimitDurationInDays,\r\n                        Pe" +
+                    "rcentage = percentage,\r\n                        FullDescription = line,\r\n       " +
+                    "                 PercentageText = $\"{percentage}%\",\r\n                    };\r\n   " +
+                    "             }\r\n\r\n                if (policy != null)\r\n                    polic" +
+                    "yList.Add(policy);\r\n            }\r\n\r\n            return SortCancellationPolicies" +
+                    "(policyList);\r\n        }\r\n\r\n        private List<CancellationPolicy> SortCancell" +
+                    "ationPolicies(List<CancellationPolicy> cancellationPolicies)\r\n        {\r\n       " +
+                    "     if (!cancellationPolicies.Any())\r\n                return cancellationPolici" +
+                    "es;\r\n\r\n            int index = 0;\r\n            int? lastValue = int.MaxValue;\r\n\r" +
+                    "\n            var policiesWithLowerLimit = cancellationPolicies.Where(c => c.Lowe" +
+                    "rLimitDurationInDays > 0 && c.UpperLimitDurationInDays == 0)\r\n                .O" +
+                    "rderByDescending(c => c.LowerLimitDurationInDays).ToList();\r\n\r\n            strin" +
+                    "g lastUnit = policiesWithLowerLimit.Any() ? policiesWithLowerLimit.First().Unit " +
+                    ": string.Empty;\r\n\r\n            foreach (var policy in policiesWithLowerLimit)\r\n " +
+                    "           {\r\n                index = index + 1;\r\n                policy.Index =" +
+                    " index;\r\n\r\n                if (policy.Unit.Equals(\"hours\"))\r\n                {\r\n" +
+                    "                    if (lastUnit.Equals(\"Days\"))\r\n                    {\r\n       " +
+                    "                 policy.UpperLimitDuration = lastValue * 24;\r\n                  " +
+                    "      policy.UpperLimitDurationInDays = lastValue;\r\n                    }\r\n     " +
+                    "               else\r\n                    {\r\n                        policy.Upper" +
+                    "LimitDuration = lastValue;\r\n                        policy.UpperLimitDurationInD" +
+                    "ays = lastValue / 24;\r\n                    }\r\n                }\r\n               " +
+                    " else\r\n                {\r\n                    if (lastUnit.Equals(\"hours\"))\r\n   " +
+                    "                 {\r\n                        policy.UpperLimitDuration = lastValu" +
+                    "e / 24;\r\n                        policy.UpperLimitDurationInDays = lastValue / 2" +
+                    "4;\r\n                    }\r\n                    else\r\n                    {\r\n    " +
+                    "                    policy.UpperLimitDuration = lastValue;\r\n                    " +
+                    "    policy.UpperLimitDurationInDays = lastValue;\r\n                    }\r\n       " +
+                    "         }\r\n\r\n                policy.UpperLimitDurationText = policy.UpperLimitD" +
+                    "uration == int.MaxValue ? string.Empty : $\"{policy.UpperLimitDuration} {policy.U" +
+                    "nit}\";\r\n                policy.LowerLimitDurationText = $\"{policy.LowerLimitDura" +
+                    "tion} {policy.Unit}\";\r\n\r\n                lastValue = policy.LowerLimitDuration;\r" +
+                    "\n                lastUnit = policy.Unit;\r\n\r\n                if (policy.UpperLimi" +
+                    "tDuration.Value == int.MaxValue)\r\n                    policy.UpperLimitDuration " +
+                    "= null;\r\n            }\r\n\r\n            var policiesWithUpperLimit = cancellationP" +
+                    "olicies.Where(c => c.UpperLimitDurationInDays > 0 && c.LowerLimitDurationInDays " +
+                    "== 0)\r\n                .OrderByDescending(c => c.UpperLimitDurationInDays).ToLis" +
+                    "t();\r\n\r\n            if (lastUnit == string.Empty)\r\n                lastUnit = po" +
+                    "liciesWithUpperLimit.Any() ? policiesWithUpperLimit.First().Unit : string.Empty;" +
+                    "\r\n            foreach (var policy in policiesWithUpperLimit)\r\n            {\r\n   " +
+                    "             index = index + 1;\r\n                policy.Index = index;\r\n\r\n\r\n    " +
+                    "            var lastValueInDays = lastUnit.Equals(\"hours\") ? lastValue / 24 : la" +
+                    "stValue;\r\n                if (lastValueInDays == policy.UpperLimitDurationInDays" +
+                    ")\r\n                    lastValue = 0;\r\n\r\n                if (policy.Unit.Equals(" +
+                    "\"hours\"))\r\n                {\r\n                    if (lastUnit.Equals(\"Days\"))\r\n" +
+                    "                    {\r\n                        policy.LowerLimitDuration = lastV" +
+                    "alue * 24;\r\n                        policy.LowerLimitDurationInDays = lastValue;" +
+                    "\r\n                    }\r\n                    else\r\n                    {\r\n      " +
+                    "                  policy.LowerLimitDuration = lastValue;\r\n                      " +
+                    "  policy.LowerLimitDurationInDays = lastValue / 24;\r\n                    }\r\n    " +
+                    "            }\r\n                else\r\n                {\r\n                    if (" +
+                    "lastUnit.Equals(\"hours\"))\r\n                    {\r\n                        policy" +
+                    ".LowerLimitDuration = lastValue / 24;\r\n                        policy.LowerLimit" +
+                    "DurationInDays = lastValue / 24;\r\n                    }\r\n                    els" +
+                    "e\r\n                    {\r\n                        policy.LowerLimitDuration = la" +
+                    "stValue;\r\n                        policy.LowerLimitDurationInDays = lastValue;\r\n" +
+                    "                    }\r\n                }\r\n\r\n                policy.UpperLimitDur" +
+                    "ationText = $\"{policy.UpperLimitDuration} {policy.Unit}\";\r\n                polic" +
+                    "y.LowerLimitDurationText = $\"{policy.LowerLimitDuration} {policy.Unit}\";\r\n\r\n    " +
+                    "            lastValue = policy.UpperLimitDuration;\r\n\r\n                if (policy" +
+                    ".UpperLimitDuration.Value == int.MaxValue)\r\n                    policy.UpperLimi" +
+                    "tDuration = null;\r\n            }\r\n\r\n            List<CancellationPolicy> sortedP" +
+                    "olicyList = cancellationPolicies.OrderBy(c => c.Index).ToList();\r\n\r\n            " +
+                    "if (sortedPolicyList.Count == 1 && sortedPolicyList.FirstOrDefault().Percentage " +
+                    "== 100)\r\n            {\r\n                var policy = sortedPolicyList.FirstOrDef" +
+                    "ault();\r\n                policy.Percentage = 0;\r\n                policy.Percenta" +
+                    "geText = \"0%\";\r\n                var upperLimitation = policy.UpperLimitDuration;" +
+                    "\r\n                var lowerLimitation = policy.LowerLimitDuration;\r\n\r\n          " +
+                    "      policy.UpperLimitDuration = null;\r\n                policy.LowerLimitDurati" +
+                    "on = upperLimitation;\r\n                policy.UpperLimitDurationText = $\"{policy" +
+                    ".UpperLimitDuration} {policy.Unit}\";\r\n                policy.LowerLimitDurationT" +
+                    "ext = $\"{policy.LowerLimitDuration} {policy.Unit}\";\r\n\r\n            }\r\n          " +
+                    "  else if (sortedPolicyList.Count == 2)\r\n            {\r\n                var noRe" +
+                    "fundExists = sortedPolicyList.Any(s => s.Percentage == 100);\r\n                va" +
+                    "r fullRefundExists = sortedPolicyList.Any(s => s.Percentage == 0);\r\n            " +
+                    "    if (noRefundExists && fullRefundExists)\r\n                {\r\n                " +
+                    "    sortedPolicyList.Remove(sortedPolicyList.FirstOrDefault(s => s.Percentage ==" +
+                    " 100));\r\n                }\r\n            }\r\n\r\n            return sortedPolicyList" +
+                    ";\r\n        }\r\n\r\n        /// <summary>\r\n        /// Gets cancellation policies fr" +
+                    "om product responses.\r\n        /// </summary>\r\n        /// <remarks>\r\n        //" +
+                    "/ Attempts to parse the policies for grouping and for\r\n        /// presenting a " +
+                    "uniform listing.\r\n        /// </remarks>\r\n        /// <param name=\"information\">" +
+                    "</param>\r\n        /// <returns>A list of cancellation policy attributes.</return" +
+                    "s>\r\n        private List<EntityAttribute> GetCancellationPolicies(List<ProductRe" +
+                    "sponseInformation> information)\r\n        {\r\n            string policyValue = inf" +
+                    "ormation.Single(c => c.Id == 112).Value;\r\n            List<string> policies = po" +
+                    "licyValue.Split(\"\\r\\n\").ToList();\r\n\r\n            List<EntityAttribute> policyAtt" +
+                    "ributes = new List<EntityAttribute>();\r\n\r\n            foreach (var policy in pol" +
+                    "icies)\r\n            {\r\n                int hourThreshold;\r\n                strin" +
+                    "g percentageValue;\r\n\r\n                if (policy.Contains(\"hours\") || policy.Con" +
+                    "tains(\"timer\"))\r\n                    (hourThreshold, percentageValue) = ParseFro" +
+                    "mHours(policy);\r\n                else if (policy.Contains(\"days\") || policy.Cont" +
+                    "ains(\"dager\"))\r\n                    (hourThreshold, percentageValue) = ParseFrom" +
+                    "Days(policy);\r\n                else\r\n                {\r\n                    hour" +
+                    "Threshold = 0;\r\n                    percentageValue = string.Empty;\r\n           " +
+                    "     }\r\n\r\n                string attribute;\r\n                if (hourThreshold >" +
+                    "= 168)\r\n                    attribute = ProductAttributeNames.CANCELLATION_168H;" +
+                    "\r\n                if (hourThreshold >= 72 && hourThreshold < 168)\r\n             " +
+                    "       attribute = ProductAttributeNames.CANCELLATION_72H;\r\n                if (" +
+                    "hourThreshold >= 48 && hourThreshold < 72)\r\n                    attribute = Prod" +
+                    "uctAttributeNames.CANCELLATION_48H;\r\n                if (hourThreshold >= 24 && " +
+                    "hourThreshold < 48)\r\n                    attribute = ProductAttributeNames.CANCE" +
+                    "LLATION_24H;\r\n                else\r\n                    attribute = ProductAttri" +
+                    "buteNames.CANCELLATION_0H;\r\n\r\n                percentageValue = percentageValue." +
+                    "Replace(\" \", \"\");\r\n\r\n                policyAttributes.Add(new EntityAttribute\r\n " +
+                    "               {\r\n                    Name = attribute,\r\n                    Val" +
+                    "ue = string.IsNullOrEmpty(percentageValue) ? policy : $\"{percentageValue}: {poli" +
+                    "cy}\"\r\n                }); ;\r\n            }\r\n\r\n            policyAttributes = pol" +
+                    "icyAttributes\r\n                .GroupBy(c => c.Name)\r\n                .Select(c " +
+                    "=> new EntityAttribute(c.Key, string.Join(\"\\r\\n\", c.Select(c => c.Value))))\r\n   " +
+                    "             .ToList();\r\n\r\n            return policyAttributes;\r\n        }\r\n\r\n  " +
+                    "      private (int, string) ParseFromHours(string policy)\r\n        {\r\n          " +
+                    "  (List<int> timeThresholds, string percentage) = GetValues(policy);\r\n\r\n        " +
+                    "    return timeThresholds.Any() ? (timeThresholds.Min(), percentage) : (0, perce" +
+                    "ntage);\r\n        }\r\n\r\n        private (int, string) ParseFromDays(string policy)" +
+                    "\r\n        {\r\n            (List<int> timeThresholds, string percentage) = GetValu" +
+                    "es(policy);\r\n\r\n            return timeThresholds.Any() ? ((timeThresholds.Min() " +
+                    "* 24), percentage) : (0, percentage);\r\n        }\r\n\r\n        private (List<int>, " +
+                    "string) GetValues(string policy)\r\n        {\r\n            MatchCollection matches" +
+                    " = Regex.Matches(policy, @\"\\d+\\s*%?\");\r\n\r\n            List<int> numbers = new Li" +
+                    "st<int>();\r\n            string percentage = string.Empty;\r\n\r\n            foreach" +
+                    " (Match match in matches)\r\n                foreach (Capture capture in match.Cap" +
+                    "tures)\r\n                    if (match.Value.Contains(\'%\'))\r\n                    " +
+                    "    percentage = match.Value;\r\n                    else\r\n                       " +
+                    " numbers.Add(int.Parse(match.Value));\r\n\r\n            return (numbers, percentage" +
+                    ");\r\n        }\r\n\r\n        private string GetCountryName(string id)\r\n        {\r\n  " +
+                    "          CountryService countryService = new CountryService();\r\n            var" +
+                    " country = countryService.Countries.FirstOrDefault(c => c.Key.Equals(id));\r\n\r\n  " +
+                    "          return country.Value ?? string.Empty;\r\n        }\r\n\r\n        private st" +
+                    "atic double? ConvertToHours(string time)\r\n        {\r\n            if (string.IsNu" +
+                    "llOrEmpty(time))\r\n                return null;\r\n\r\n            if (time.Contains(" +
+                    "\" each way\", StringComparison.InvariantCultureIgnoreCase))\r\n            {\r\n     " +
+                    "           time = time.Replace(\" each way\", \"\");\r\n            }\r\n\r\n            s" +
+                    "tring[] parts = time.Split(\' \');\r\n            double? convertedHours = 0;\r\n     " +
+                    "       switch (parts.Length)\r\n            {\r\n                case 2 when parts[1" +
+                    "] == \"time\":\r\n                case 2 when parts[1] == \"hour\":\r\n                 " +
+                    "   convertedHours = double.Parse(parts[0]);\r\n                    break;\r\n       " +
+                    "         case 2:\r\n                {\r\n                    if (parts[1] == \"minute" +
+                    "s\")\r\n                    {\r\n                        convertedHours = double.Pars" +
+                    "e(parts[0]) / 60;\r\n                    }\r\n\r\n                    break;\r\n        " +
+                    "        }\r\n                case 4:\r\n                {\r\n                    if ((" +
+                    "parts[1] == \"hour\" && parts[3] == \"minutes\") || (parts[1] == \"hours\" && parts[3]" +
+                    " == \"minutes\"))\r\n                    {\r\n                        double hours = d" +
+                    "ouble.Parse(parts[0]);\r\n                        double minutes = double.Parse(pa" +
+                    "rts[2]);\r\n\r\n                        convertedHours = hours + (minutes / 60);\r\n  " +
+                    "                  }\r\n\r\n                    break;\r\n                }\r\n          " +
+                    "      case 5:\r\n                {\r\n                    if ((parts[1] == \"hour\" &&" +
+                    " parts[4] == \"minutes\") || (parts[1] == \"hours\" && parts[4] == \"minutes\"))\r\n    " +
+                    "                {\r\n                        double hours = double.Parse(parts[0])" +
+                    ";\r\n                        double minutes = double.Parse(parts[3]);\r\n\r\n         " +
+                    "               convertedHours = hours + (minutes / 60);\r\n                    }\r\n" +
+                    "\r\n                    break;\r\n                }\r\n                case 1:\r\n      " +
+                    "          {\r\n                    if (time.Contains(\',\'))\r\n                      " +
+                    "  time = time.Replace(\',\', \'.\');\r\n                    if (time.EndsWith(\"h\"))\r\n " +
+                    "                   {\r\n                        convertedHours = double.Parse(time" +
+                    ".Replace(\"h\", \"\"));\r\n                    }\r\n                    else if (time.En" +
+                    "dsWith(\"H\"))\r\n                    {\r\n                        convertedHours = do" +
+                    "uble.Parse(time.Replace(\"H\", \"\"));\r\n                    }\r\n                    e" +
+                    "lse if (time.EndsWith(\"d\"))\r\n                    {\r\n                        conv" +
+                    "ertedHours = double.Parse(time.Replace(\"d\", \"\")) * 24;\r\n                    }\r\n " +
+                    "                   else if (double.TryParse(time, out var temp))\r\n              " +
+                    "      {\r\n                        convertedHours = temp;\r\n                    }\r\n" +
+                    "                    else if (time.Equals(\"Variable\", StringComparison.InvariantC" +
+                    "ultureIgnoreCase))\r\n                    {\r\n                        convertedHour" +
+                    "s = null;\r\n                    }\r\n\r\n                    break;\r\n                " +
+                    "}\r\n            }\r\n            if (convertedHours == 0)\r\n                converte" +
+                    "dHours = null;\r\n\r\n            return convertedHours;\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
