@@ -45,5 +45,16 @@
 }
 
 ";
+
+        public static readonly string ProductEndpointSpecs = @"
+    ""endpoints"": [
+        {
+            ""name"": ""Accommodation"",
+            ""functionName"": ""GetAccomodation"",
+            ""httpMethod"": ""POST"",
+            ""route"": ""accommodation"",
+        }
+    ]
+";
     }
 }

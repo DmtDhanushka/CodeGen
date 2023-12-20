@@ -18,9 +18,52 @@ internal class Program
 
         //await WriteJokeToHTML(kernel);
 
-        await WriteControllerToFile(kernel);
+        //await WriteControllerToFile(kernel);
+
+        await WriteProductController(kernel);
 
 
+    }
+
+    public static async Task WriteProductController(Kernel kernel)
+    {
+        string generatedCode = await GenerateProductController(kernel);
+
+        var newControllerTemplate = new CBProductController()
+        {
+            //ControllerMetaData = new ControllerModel
+            //{
+            //    EndpointName = "find",
+            //    Route = "/v1/find",
+            //    CompanyName = "CreativeTravel"
+            //},
+            EndpointsCode = generatedCode
+
+        };
+        string controllerContent = newControllerTemplate.TransformText();
+        Console.WriteLine($"\n----------- Content -----------\n{controllerContent}");
+
+        DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+        File.WriteAllText($"{now.ToString("yyyyMMddHHmmssfff")}ProductController.cs", controllerContent);
+    }
+
+    public static async Task<string> GenerateProductController(Kernel kernel)
+    {
+        KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
+            DefaultPrompts.ProductControllerGenTemplate,
+            new OpenAIPromptExecutionSettings() { Temperature = 0.1, TopP = 1 });
+
+        FunctionResult result = await kernel.InvokeAsync(
+            jokeFunction,
+            new()
+            {
+                ["specification"] = EndpointSpecification.ProductEndpointSpecs,
+                ["sampleSpecs"] = TrainingCode.ExampleSpecs,
+                ["sampleCode"] = TrainingCode.ExampleProductEndpoints
+            });
+        //Console.WriteLine("\nCODE:\n " + result.GetValue<string>());
+
+        return result.GetValue<string>() ?? "// Empty code";
     }
 
     public static async Task WriteControllerToFile(Kernel kernel)

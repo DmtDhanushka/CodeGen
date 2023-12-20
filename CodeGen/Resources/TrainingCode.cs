@@ -241,5 +241,145 @@ Namespace Commerce.Adapters.<#= ControllerMetaData.CompanyName #>Adapter.Control
 }
 
 ";
+
+        public static readonly string ExampleProductEndpoints = @"
+
+        /// <summary>
+        /// <para>Product lookup.</para>
+        /// <para>
+        /// One entry in HttpEndpoints should be set up:
+        /// Product search: {{ApiBase}}/api/activity
+        /// </para>
+        /// </summary>
+        /// <param name=""request"">The product lookup request object. <see cref=""AdapterMessage""/></param>
+        /// <returns><see cref=""AdapterResultMessage""/></returns>
+        [HttpPost(""Products"")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, ""The request is invalid"")]
+        public async Task<ActionResult<AdapterResultMessage>> GetProducts([FromBody] AdapterMessage request, CancellationToken cancellationToken)
+        {
+            AdapterConfig config;
+            ServiceMessage serviceMessage;
+            try
+            {
+                serviceMessage = mapper.Map<ServiceMessage>(request);
+                using (logger.BeginScope(new Dictionary<string, object>
+                {
+                    [""RequestBody""] = serviceMessage,
+                }))
+                {
+                    logger.LogDebug(""GetProducts request"", serviceMessage);
+                }
+
+                config = AdapterConfigHelper.GetAdapterConfigFromRequest(serviceMessage, logger, ""GetProducts"");
+
+                if (string.IsNullOrEmpty(config.AuthorizationConfig))
+                {
+                    ProductResponse configError = ErrorHelpers.HandleConfigError<ProductResponse>(""GetProducts"", logger);
+
+                    return new AdapterResultMessage
+                    {
+                        ErrorOccured = true,
+                        ErrorMessage = configError.ErrorMessage ?? string.Empty,
+                        Result = JsonConvert.SerializeObject(configError)
+                    };
+                }
+
+                if (config.HttpEndpoints == null || !config.HttpEndpoints.Any())
+                    throw new Exception(""API endpoint addresses are not specified."");
+            }
+            catch (Exception ex)
+            {
+                var message = ex.InnerException == null ?
+                    ex.Message : $""{ex.Message}: {ex.InnerException.Message}"";
+
+                ProductResponse errorResponse = new ProductResponse
+                {
+                    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status400BadRequest, ErrorCode.ConfigurationError, message),
+                    Error = true
+                };
+
+                return new AdapterResultMessage
+                {
+                    ErrorOccured = true,
+                    ErrorMessage = message,
+                    Result = JsonConvert.SerializeObject(errorResponse)
+                };
+            }
+
+            AuthorizationConfig? authorizationConfig;
+            try
+            {
+                authorizationConfig = AdapterConfigHelper.GetAuthorizationConfiguration(config.AuthorizationConfig);
+
+                if (authorizationConfig == null)
+                    throw new Exception(""Unable to get authorization configuration."");
+            }
+            catch (Exception ex)
+            {
+                ProductResponse authorizationError = new ProductResponse
+                {
+                    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status400BadRequest, ErrorCode.ConfigurationError, ex.Message),
+                    Error = true
+                };
+
+                return new AdapterResultMessage
+                {
+                    ErrorOccured = true,
+                    ErrorMessage = authorizationError.ErrorMessage ?? string.Empty,
+                    Result = JsonConvert.SerializeObject(authorizationError)
+                };
+            }
+
+            ProductServiceMessage productServiceMessage = CreateProductServiceMessage(serviceMessage, config, authorizationConfig);
+
+            // Allows overriding request timeout.
+            Request.Headers.TryGetValue(Constants.RequestTimeout, out var timeoutValues);
+            if (timeoutValues.Any())
+            {
+                bool parseSuccess = TimeSpan.TryParse(timeoutValues.First(), out var timeout);
+
+                if (parseSuccess)
+                    productServiceMessage.RequestTimeout = timeout;
+            }
+
+            var products = await productService.GetProducts(productServiceMessage, cancellationToken);
+
+            if (products.ProblemDetails != null || !string.IsNullOrEmpty(products.ErrorMessage))
+            {
+                var errorMessage = products.ProblemDetails?.Detail
+                    ?? products.ErrorMessage;
+
+                logger.LogError(errorMessage);
+
+                var statusCode = products.ProblemDetails?.Status
+                    ?? StatusCodes.Status500InternalServerError;
+
+                products.Products = null;
+
+                return StatusCode(statusCode, products);
+            }
+
+            AdapterResultMessage response = new AdapterResultMessage
+            {
+                ErrorOccured = false,
+                ErrorMessage = string.Empty,
+                Result = JsonConvert.SerializeObject(products)
+            };
+
+            return Ok(response);
+        }
+
+";
+
+        public static readonly string ExampleSpecs = @"
+    ""endpoints"": [
+        {
+            ""name"": ""Products"",
+            ""functionName"": ""GetProducts"",
+            ""httpMethod"": ""POST"",
+            ""route"": ""products"",
+        }
+    ]
+";
     }
 }

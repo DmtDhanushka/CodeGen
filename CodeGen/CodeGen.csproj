@@ -28,6 +28,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AdapterController.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\CBProductController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CBProductController.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\PolicyTicket.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -44,6 +49,10 @@
     <None Update="Templates\AdapterController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>AdapterController.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CBProductController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CBProductController.cs</LastGenOutput>
     </None>
     <None Update="Templates\PolicyTicket.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

@@ -1,0 +1,79 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+Using AutoMapper;
+Using Commerce.Adapters.CitybreakAdapter.Controllers.DTO;
+Using Commerce.Adapters.CitybreakAdapter.Infrastructure;
+Using Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;
+Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Config;
+Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Error;
+Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Helpers;
+Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;
+Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;
+Using Microsoft.AspNetCore.Mvc;
+Using Newtonsoft.Json;
+Using Swashbuckle.AspNetCore.Annotations;
+
+
+Namespace Commerce.Adapters.CitybreakAdapter.Controllers
+{
+    [Route("v0/Adapter")]
+    [ApiController]
+    Public Class CitybreakProductController :  ControllerBase
+    {
+        Private ReadOnly IMapper mapper;
+        Private ReadOnly ILogger<CitybreakProductController> logger;
+        Private ReadOnly IProductService productService;
+
+        Public CitybreakProductController(IProductService productService, ILogger<CitybreakProductController> logger, IMapper mapper)
+        {
+            this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
+            this.productService = productService ?? throw New ArgumentNullException(NameOf(productService));
+            this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));
+        }
+		
+		<#= EndpointsCode #>
+
+
+        /// <summary>
+        /// Creates ProductServiceMessage based on ServiceMessage, AdapterConfig And AuthorizationConfig. 
+        /// </summary>
+        /// <param name="serviceMessage">Adapter service message object. <see cref="ServiceMessage"/></param>
+        /// <param name="config">Adapter configuration object. <see cref="AdapterConfig"/></param>
+        /// <param name="authorizationConfig">Authorization configuration object. <see cref="AuthorizationConfig"/></param>
+        /// <returns><see cref="ProductServiceMessage"/></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        Private ProductServiceMessage CreateProductServiceMessage(ServiceMessage serviceMessage, AdapterConfig config, AuthorizationConfig authorizationConfig)
+        {
+            If (serviceMessage == null)
+        Throw New ArgumentNullException(NameOf(serviceMessage));
+            If (String.IsNullOrEmpty(serviceMessage.Payload))
+        Throw New ArgumentNullException(NameOf(serviceMessage.Payload));
+            If (authorizationConfig == null)
+        Throw New ArgumentNullException(NameOf(authorizationConfig));
+            If (!(config.HttpEndpoints?.Any() ?? True))
+        Throw New ArgumentNullException(NameOf(config.HttpEndpoints));
+
+            // We may need multiple addresses, so they have to be sent in HttpEndpoints.
+            ProductServiceConfig serviceConfig = New ProductServiceConfig
+            {
+                HttpEndpoints = config.HttpEndpoints.ToList()
+            };
+
+            // Deserialize the base message from the payload JSON.
+            ProductServiceMessage? message = JsonConvert.DeserializeObject<ProductServiceMessage>(serviceMessage.Payload);
+
+            If (message == null)
+        Throw New Exception("Deserialization of product service message failed.");
+
+            // Set the config objects.
+            message.ServiceConfig = serviceConfig;
+            message.AuthorizationConfig = authorizationConfig;
+
+            Return message;
+        }
+    }
+}
