@@ -33,10 +33,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CBProductController.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\PolicyTicket.cs">
+    <Compile Update="Templates\ProductService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>PolicyTicket.tt</DependentUpon>
+      <DependentUpon>ProductService.tt</DependentUpon>
     </Compile>
     <Compile Update="TextTemplate1.cs">
       <DesignTime>True</DesignTime>
@@ -54,9 +54,9 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CBProductController.cs</LastGenOutput>
     </None>
-    <None Update="Templates\PolicyTicket.tt">
+    <None Update="Templates\ProductService.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>PolicyTicket.cs</LastGenOutput>
+      <LastGenOutput>ProductService.cs</LastGenOutput>
     </None>
     <None Update="TextTemplate1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

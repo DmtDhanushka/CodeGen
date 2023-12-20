@@ -28,41 +28,32 @@ namespace CodeGen.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"
-Using AutoMapper;
-Using Commerce.Adapters.CitybreakAdapter.Controllers.DTO;
-Using Commerce.Adapters.CitybreakAdapter.Infrastructure;
-Using Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Config;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Error;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Helpers;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;
-Using Microsoft.AspNetCore.Mvc;
-Using Newtonsoft.Json;
-Using Swashbuckle.AspNetCore.Annotations;
-
-
-Namespace Commerce.Adapters.CitybreakAdapter.Controllers
-{
-    [Route(""v0/Adapter"")]
-    [ApiController]
-    Public Class CitybreakProductController :  ControllerBase
-    {
-        Private ReadOnly IMapper mapper;
-        Private ReadOnly ILogger<CitybreakProductController> logger;
-        Private ReadOnly IProductService productService;
-
-        Public CitybreakProductController(IProductService productService, ILogger<CitybreakProductController> logger, IMapper mapper)
-        {
-            this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
-            this.productService = productService ?? throw New ArgumentNullException(NameOf(productService));
-            this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));
-        }
-		
-		");
+            this.Write("\r\nusing AutoMapper;\r\nusing Commerce.Adapters.CitybreakAdapter.Controllers.DTO;\r\nu" +
+                    "sing Commerce.Adapters.CitybreakAdapter.Infrastructure;\r\nusing Commerce.Adapters" +
+                    ".CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;\r\nusing Commerce.Adapters" +
+                    ".CitybreakAdapter.Model.Commerce.Config;\r\nusing Commerce.Adapters.CitybreakAdapt" +
+                    "er.Model.Commerce.Error;\r\nusing Commerce.Adapters.CitybreakAdapter.Model.Commerc" +
+                    "e.Helpers;\r\nusing Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;\r\nu" +
+                    "sing Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;\r\nusing Microso" +
+                    "ft.AspNetCore.Mvc;\r\nusing Newtonsoft.Json;\r\nusing Swashbuckle.AspNetCore.Annotat" +
+                    "ions;\r\n\r\n\r\nnamespace Commerce.Adapters.CitybreakAdapter.Controllers\r\n{\r\n    [Rou" +
+                    "te(\"v0/Adapter\")]\r\n    [ApiController]\r\n    public class CitybreakProductControl" +
+                    "ler : ControllerBase\r\n    {\r\n        private readonly IMapper mapper;\r\n        p" +
+                    "rivate readonly ILogger<CitybreakProductController> logger;\r\n        private rea" +
+                    "donly IProductService productService;\r\n\r\n        public CitybreakProductControll" +
+                    "er(IProductService productService, ILogger<CitybreakProductController> logger, I" +
+                    "Mapper mapper)\r\n        {\r\n            this.logger = logger ?? throw New Argumen" +
+                    "tNullException(NameOf(logger));\r\n            this.productService = productServic" +
+                    "e ?? throw New ArgumentNullException(NameOf(productService));\r\n            this." +
+                    "mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));\r\n        }\r\n" +
+                    "\r\n\r\n        /// <summary>\r\n        /// <para>Product lookup.</para>\r\n        ///" +
+                    " <para>\r\n        /// One entry in HttpEndpoints should be set up:\r\n        /// P" +
+                    "roduct search {{ApiBase}}/api/activity\r\n        /// </para>\r\n        /// </summa" +
+                    "ry>\r\n        /// <param name=\"request\">The product lookup request object. <see c" +
+                    "ref=\"AdapterMessage\"/></param>\r\n        /// <returns><see cref=\"AdapterResultMes" +
+                    "sage\"/></returns>\r\n        \t\t\r\n");
             
-            #line 38 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\CBProductController.tt"
+            #line 49 "C:\Users\Dimuthu.D\source\repos\CodeGen\CodeGen\Templates\CBProductController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EndpointsCode));
             
             #line default
@@ -74,25 +65,26 @@ Namespace Commerce.Adapters.CitybreakAdapter.Controllers
                     "ation object. <see cref=\"AdapterConfig\"/></param>\r\n        /// <param name=\"auth" +
                     "orizationConfig\">Authorization configuration object. <see cref=\"AuthorizationCon" +
                     "fig\"/></param>\r\n        /// <returns><see cref=\"ProductServiceMessage\"/></return" +
-                    "s>\r\n        /// <exception cref=\"ArgumentNullException\"></exception>\r\n        Pr" +
+                    "s>\r\n        /// <exception cref=\"ArgumentNullException\"></exception>\r\n        pr" +
                     "ivate ProductServiceMessage CreateProductServiceMessage(ServiceMessage serviceMe" +
                     "ssage, AdapterConfig config, AuthorizationConfig authorizationConfig)\r\n        {" +
-                    "\r\n            If (serviceMessage == null)\r\n        Throw New ArgumentNullExcepti" +
-                    "on(NameOf(serviceMessage));\r\n            If (String.IsNullOrEmpty(serviceMessage" +
-                    ".Payload))\r\n        Throw New ArgumentNullException(NameOf(serviceMessage.Payloa" +
-                    "d));\r\n            If (authorizationConfig == null)\r\n        Throw New ArgumentNu" +
-                    "llException(NameOf(authorizationConfig));\r\n            If (!(config.HttpEndpoint" +
-                    "s?.Any() ?? True))\r\n        Throw New ArgumentNullException(NameOf(config.HttpEn" +
-                    "dpoints));\r\n\r\n            // We may need multiple addresses, so they have to be " +
-                    "sent in HttpEndpoints.\r\n            ProductServiceConfig serviceConfig = New Pro" +
-                    "ductServiceConfig\r\n            {\r\n                HttpEndpoints = config.HttpEnd" +
-                    "points.ToList()\r\n            };\r\n\r\n            // Deserialize the base message f" +
-                    "rom the payload JSON.\r\n            ProductServiceMessage? message = JsonConvert." +
-                    "DeserializeObject<ProductServiceMessage>(serviceMessage.Payload);\r\n\r\n           " +
-                    " If (message == null)\r\n        Throw New Exception(\"Deserialization of product s" +
-                    "ervice message failed.\");\r\n\r\n            // Set the config objects.\r\n           " +
-                    " message.ServiceConfig = serviceConfig;\r\n            message.AuthorizationConfig" +
-                    " = authorizationConfig;\r\n\r\n            Return message;\r\n        }\r\n    }\r\n}\r\n");
+                    "\r\n            if (serviceMessage == null)\r\n                throw new ArgumentNul" +
+                    "lException(nameof(serviceMessage));\r\n            if (string.IsNullOrEmpty(servic" +
+                    "eMessage.Payload))\r\n                throw new ArgumentNullException(nameof(servi" +
+                    "ceMessage.Payload));\r\n            if (authorizationConfig == null)\r\n            " +
+                    "    throw new ArgumentNullException(nameof(authorizationConfig));\r\n            i" +
+                    "f (!(config.HttpEndpoints?.Any() ?? true))\r\n                throw new ArgumentNu" +
+                    "llException(nameof(config.HttpEndpoints));\r\n\r\n            // We may need multipl" +
+                    "e addresses, so they have to be sent in HttpEndpoints.\r\n            ProductServi" +
+                    "ceConfig serviceConfig = new ProductServiceConfig\r\n            {\r\n              " +
+                    "  HttpEndpoints = config.HttpEndpoints.ToList()\r\n            };\r\n\r\n            /" +
+                    "/ Deserialize the base message from the payload JSON.\r\n            ProductServic" +
+                    "eMessage? message = JsonConvert.DeserializeObject<ProductServiceMessage>(service" +
+                    "Message.Payload);\r\n\r\n            if (message == null)\r\n                throw new" +
+                    " Exception(\"Deserialization of product service message failed.\");\r\n\r\n           " +
+                    " // Set the config objects.\r\n            message.ServiceConfig = serviceConfig;\r" +
+                    "\n            message.AuthorizationConfig = authorizationConfig;\r\n\r\n            r" +
+                    "eturn message;\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

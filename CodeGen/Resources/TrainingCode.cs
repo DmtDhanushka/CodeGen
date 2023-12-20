@@ -381,5 +381,73 @@ Namespace Commerce.Adapters.<#= ControllerMetaData.CompanyName #>Adapter.Control
         }
     ]
 ";
+
+        public static readonly string ExampleProductServiceMethods = @"
+public async Task<ProductResponse> GetProducts(ProductServiceMessage request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+            if (request.ServiceConfig == null)
+                throw new ArgumentNullException(nameof(request.ServiceConfig));
+            if (request.AuthorizationConfig == null)
+                throw new ArgumentNullException(nameof(request.AuthorizationConfig));
+
+            ulong page;
+            if (string.IsNullOrEmpty(request.Page))
+                page = 1;
+            else
+            {
+                bool parseSuccess = ulong.TryParse(request.Page, out page);
+
+                if (!parseSuccess)
+                    throw new ArgumentException(""Invalid page number."", nameof(request.Page));
+            }
+
+            if (page == 0)
+                throw new ArgumentException(""Page number cannot be lower than 1."", nameof(request.Page));
+            if (page > long.MaxValue)
+                throw new ArgumentException(string.Format(""Page number cannot exceed {maxValue}."", long.MaxValue), nameof(request.Page));
+
+            int? pointOfSalesId = EntityAttributeHelper.GetNumberAttribute(request.SearchAttributes, ""POINTOFSALESID"");
+            string language = EntityAttributeHelper.GetAttributeValueAsList(request.SearchAttributes, ""LANGUAGE"").FirstOrDefault();
+
+            if (pointOfSalesId == null)
+                throw new ArgumentException(""PointOfSalesId must have a value."", nameof(pointOfSalesId));
+            if (language == null)
+                throw new ArgumentException(""Language must have a value."", nameof(language));
+
+            int? pageSize = request.PageSize;
+            if (pageSize == null)
+                pageSize = 50; // Current max.
+
+            if (pageSize > 50)
+                throw new ArgumentException(""Page size cannot exceed 50."", nameof(request.PageSize));
+
+            var url = request.ServiceConfig.HttpEndpoints.Single().Url;
+            var uri = new Uri(string.Format(url, pointOfSalesId));
+
+            ProductSearchRequest searchRequest = new ProductSearchRequest
+            {
+                PointOfSalesId = (long)pointOfSalesId,
+                PageSize = pageSize.Value,
+                Page = (long)page - 1, // Page number in GalaxyApi is 0-based while in our API it's 1-based.
+                ProductTypes = new List<string> { ""Activity"", ""Transport"" } // We're using GalaxyAPI only for activities.
+            };
+
+            ProductSearchResponse result = await CallProductSearch(searchRequest, uri, language, request.AuthorizationConfig, request.RequestTimeout, cancellationToken);
+
+            bool includeAttributes = request.IncludeAttributes;
+            return CreateProductResponse(result, request, language, page, pageSize.Value, includeAttributes);
+        }
+
+";
+
+        public static readonly string ExampleProductServiceSpecs = @"
+    {
+        ""name"": ""Products"",
+        ""functionName"": ""GetProduct"",
+        ""productTypes"":  ""Activity"", ""Transport"",
+    }
+";
     }
 }

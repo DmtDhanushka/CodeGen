@@ -22,7 +22,23 @@ internal class Program
 
         await WriteProductController(kernel);
 
+        await WritreProductService(kernel);
+    }
 
+    public static async Task WritreProductService(Kernel kernel)
+    {
+        string generatedCode = await GenerateProductService(kernel);
+
+        var newControllerTemplate = new ProductService()
+        {
+            GeneratedCode = generatedCode,
+
+        };
+        string content = newControllerTemplate.TransformText();
+        Console.WriteLine($"\n----------- ProductService -----------\n{content.Length}");
+
+        DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+        File.WriteAllText($"{now.ToString("yyyyMMddHHmmssfff")}ProductService.cs", content);
     }
 
     public static async Task WriteProductController(Kernel kernel)
@@ -31,30 +47,44 @@ internal class Program
 
         var newControllerTemplate = new CBProductController()
         {
-            //ControllerMetaData = new ControllerModel
-            //{
-            //    EndpointName = "find",
-            //    Route = "/v1/find",
-            //    CompanyName = "CreativeTravel"
-            //},
             EndpointsCode = generatedCode
 
         };
         string controllerContent = newControllerTemplate.TransformText();
-        Console.WriteLine($"\n----------- Content -----------\n{controllerContent}");
+        Console.WriteLine($"\n----------- ProductController -----------\n{controllerContent.Length}");
 
         DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
         File.WriteAllText($"{now.ToString("yyyyMMddHHmmssfff")}ProductController.cs", controllerContent);
     }
 
+    public static async Task<string> GenerateProductService(Kernel kernel)
+    {
+        KernelFunction genFunc = kernel.CreateFunctionFromPrompt(
+            DefaultPrompts.ProductServiceGenTemplate,
+            new OpenAIPromptExecutionSettings() { Temperature = 0.1, TopP = 1 });
+
+        FunctionResult result = await kernel.InvokeAsync(
+            genFunc,
+            new()
+            {
+                ["specification"] = EndpointSpecification.ProudctServiceSpecs,
+                ["sampleSpecs"] = TrainingCode.ExampleProductServiceSpecs,
+                ["sampleCode"] = TrainingCode.ExampleProductServiceMethods
+            });
+        //Console.WriteLine("\nCODE:\n " + result.GetValue<string>());
+
+        return result.GetValue<string>() ?? "// Empty code";
+    }
+
+
     public static async Task<string> GenerateProductController(Kernel kernel)
     {
-        KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
+        KernelFunction genFunc = kernel.CreateFunctionFromPrompt(
             DefaultPrompts.ProductControllerGenTemplate,
             new OpenAIPromptExecutionSettings() { Temperature = 0.1, TopP = 1 });
 
         FunctionResult result = await kernel.InvokeAsync(
-            jokeFunction,
+            genFunc,
             new()
             {
                 ["specification"] = EndpointSpecification.ProductEndpointSpecs,
@@ -174,44 +204,6 @@ Event: {{$input}}
         return builder.Build();
     }
 
-    public static async Task WriteJokeToHTML(Kernel kernel)
-    {
-        string res = await GenerateJoke(kernel);
-
-        var newTemplate = new PolicyTicket()
-        {
-            PolicyDetails = new PolicyModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PolicyName = "Name",
-                StartDate = DateTime.Now.AddDays(2),
-            },
-            Joke = new JokeModel
-            {
-                Description = res,
-                Title = "Joke",
-            }
-        };
-        var content = newTemplate.TransformText();
-        File.WriteAllText("policy.html", content);
-    }
-
-    public static async Task<string> GenerateJoke(Kernel kernel)
-    {
-        KernelFunction jokeFunction = kernel.CreateFunctionFromPrompt(
-            DefaultPrompts.JokePromptTemplate,
-            new OpenAIPromptExecutionSettings() { MaxTokens = 100, Temperature = 0.4, TopP = 1 });
-        // User input from key board
-        Console.WriteLine("Enter your joke event/thing here: ");
-        string input = Console.ReadLine();
-
-        FunctionResult result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
-        Console.WriteLine("\nJOKE: " + result.GetValue<string>());
-
-        return result.GetValue<string>() ?? "Empty Joke";
-    }
-    
 
 
 }

@@ -65,5 +65,34 @@ Your response should be in C# code. Dont include any other description. Just men
 
 ";
 
+        public static readonly string ProductServiceGenTemplate = @"
+You are an experienced .NET C# developer. I am giving you the code for an existing C# code functions.
+
+++++++++++++++++++++++++ Sample code starts ++++++++++++++++++++++++
+      
+{{$sampleCode}}
+   
+++++++++++++++++++++++++ Sample code ends ++++++++++++++++++++++++
+
+This is the specification for the given sample code and I want you to understand the patterns.
+
+++++++++++++++++++++++++ Sample code specification starts ++++++++++++++++++++++++
+      
+{{$sampleSpecs}}
+   
+++++++++++++++++++++++++ Sample code specification ends ++++++++++++++++++++++++
+
+Following the same code style I want you to write an endpoints which has following specification.
+
+++++++++++++++++++++++++ Specification start ++++++++++++++++++++++++
+
+{{$specification}}
+
+++++++++++++++++++++++++ Specification ends ++++++++++++++++++++++++
+
+Your response should be in C# code. Dont include any other description. Just mention at top these are GPT generated code along with the gpt version/model.
+
+";
+
     }
 }

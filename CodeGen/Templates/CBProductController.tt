@@ -4,38 +4,49 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 
-Using AutoMapper;
-Using Commerce.Adapters.CitybreakAdapter.Controllers.DTO;
-Using Commerce.Adapters.CitybreakAdapter.Infrastructure;
-Using Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Config;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Error;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Helpers;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;
-Using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;
-Using Microsoft.AspNetCore.Mvc;
-Using Newtonsoft.Json;
-Using Swashbuckle.AspNetCore.Annotations;
+using AutoMapper;
+using Commerce.Adapters.CitybreakAdapter.Controllers.DTO;
+using Commerce.Adapters.CitybreakAdapter.Infrastructure;
+using Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Config;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Error;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Helpers;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Annotations;
 
 
-Namespace Commerce.Adapters.CitybreakAdapter.Controllers
+namespace Commerce.Adapters.CitybreakAdapter.Controllers
 {
     [Route("v0/Adapter")]
     [ApiController]
-    Public Class CitybreakProductController :  ControllerBase
+    public class CitybreakProductController : ControllerBase
     {
-        Private ReadOnly IMapper mapper;
-        Private ReadOnly ILogger<CitybreakProductController> logger;
-        Private ReadOnly IProductService productService;
+        private readonly IMapper mapper;
+        private readonly ILogger<CitybreakProductController> logger;
+        private readonly IProductService productService;
 
-        Public CitybreakProductController(IProductService productService, ILogger<CitybreakProductController> logger, IMapper mapper)
+        public CitybreakProductController(IProductService productService, ILogger<CitybreakProductController> logger, IMapper mapper)
         {
             this.logger = logger ?? throw New ArgumentNullException(NameOf(logger));
             this.productService = productService ?? throw New ArgumentNullException(NameOf(productService));
             this.mapper = mapper ?? throw New ArgumentNullException(NameOf(mapper));
         }
-		
-		<#= EndpointsCode #>
+
+
+        /// <summary>
+        /// <para>Product lookup.</para>
+        /// <para>
+        /// One entry in HttpEndpoints should be set up:
+        /// Product search {{ApiBase}}/api/activity
+        /// </para>
+        /// </summary>
+        /// <param name="request">The product lookup request object. <see cref="AdapterMessage"/></param>
+        /// <returns><see cref="AdapterResultMessage"/></returns>
+        		
+<#= EndpointsCode #>
 
 
         /// <summary>
@@ -46,19 +57,19 @@ Namespace Commerce.Adapters.CitybreakAdapter.Controllers
         /// <param name="authorizationConfig">Authorization configuration object. <see cref="AuthorizationConfig"/></param>
         /// <returns><see cref="ProductServiceMessage"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        Private ProductServiceMessage CreateProductServiceMessage(ServiceMessage serviceMessage, AdapterConfig config, AuthorizationConfig authorizationConfig)
+        private ProductServiceMessage CreateProductServiceMessage(ServiceMessage serviceMessage, AdapterConfig config, AuthorizationConfig authorizationConfig)
         {
-            If (serviceMessage == null)
-        Throw New ArgumentNullException(NameOf(serviceMessage));
-            If (String.IsNullOrEmpty(serviceMessage.Payload))
-        Throw New ArgumentNullException(NameOf(serviceMessage.Payload));
-            If (authorizationConfig == null)
-        Throw New ArgumentNullException(NameOf(authorizationConfig));
-            If (!(config.HttpEndpoints?.Any() ?? True))
-        Throw New ArgumentNullException(NameOf(config.HttpEndpoints));
+            if (serviceMessage == null)
+                throw new ArgumentNullException(nameof(serviceMessage));
+            if (string.IsNullOrEmpty(serviceMessage.Payload))
+                throw new ArgumentNullException(nameof(serviceMessage.Payload));
+            if (authorizationConfig == null)
+                throw new ArgumentNullException(nameof(authorizationConfig));
+            if (!(config.HttpEndpoints?.Any() ?? true))
+                throw new ArgumentNullException(nameof(config.HttpEndpoints));
 
             // We may need multiple addresses, so they have to be sent in HttpEndpoints.
-            ProductServiceConfig serviceConfig = New ProductServiceConfig
+            ProductServiceConfig serviceConfig = new ProductServiceConfig
             {
                 HttpEndpoints = config.HttpEndpoints.ToList()
             };
@@ -66,14 +77,14 @@ Namespace Commerce.Adapters.CitybreakAdapter.Controllers
             // Deserialize the base message from the payload JSON.
             ProductServiceMessage? message = JsonConvert.DeserializeObject<ProductServiceMessage>(serviceMessage.Payload);
 
-            If (message == null)
-        Throw New Exception("Deserialization of product service message failed.");
+            if (message == null)
+                throw new Exception("Deserialization of product service message failed.");
 
             // Set the config objects.
             message.ServiceConfig = serviceConfig;
             message.AuthorizationConfig = authorizationConfig;
 
-            Return message;
+            return message;
         }
     }
 }

@@ -1,0 +1,1020 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+using Commerce.Adapters.CitybreakAdapter.Infrastructure.Interfaces;
+using Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer.Interfaces;
+using Commerce.Adapters.CitybreakAdapter.Model.Citybreak.Requests;
+using Commerce.Adapters.CitybreakAdapter.Model.Citybreak.Responses;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Config;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Entities;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Error;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Helpers;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Requests;
+using Commerce.Adapters.CitybreakAdapter.Model.Commerce.Responses;
+using Newtonsoft.Json;
+using System.Linq;
+using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
+using System.Drawing;
+using Commerce.Adapters.CitybreakAdapter.Infrastructure;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Diagnostics;
+
+namespace Commerce.Adapters.CitybreakAdapter.Model.AntiCorruptionLayer
+{
+    public class ProductService : IProductService
+    {
+        private readonly IHttpClient _client;
+        private readonly ILogger<ProductService> _logger;
+
+        /// <summary>
+        /// Ctor. Registers dependencies for the service.
+        /// </summary>
+        /// <param name="httpClient">A client for making HTTP requests.</param>
+        /// <param name="logger">A logger service.</param
+        /// <exception cref="ArgumentNullException"></exception>
+        public ProductService(IHttpClient httpClient, ILogger<ProductService> logger)
+        {
+            _client = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        /// <inheritdoc/>
+        <#= GeneratedCode #>
+
+        public static List<string> ConvertToStringList(string item)
+        {
+            List<string> list = new List<string>();
+
+            if (string.IsNullOrEmpty(item))
+                return list;
+
+            item = item.Replace("<ul></ul>", "");
+            item = item.Replace("<p></p>", "");
+            item = item.Replace("<b></b>", "");
+            item = item.Replace("<i></i>", "");
+            item = item.Replace("<u></u>", "");
+            item = item.Replace("<sub></sub>", "");
+            item = item.Replace("<sup></sup>", "");
+            item = item.Replace("<strike></strike>", "");
+
+            if (item.Contains("<div"))
+            {
+                string pattern = @"<div.*?>.*?</div>";
+                item = Regex.Replace(item, pattern, string.Empty);
+            }
+
+            if (item.Contains("<li"))
+            {
+                MatchCollection matches = Regex.Matches(item, @"<li.*?>(.*?)</li>");
+
+                foreach (Match match in matches)
+                {
+                    if (match.Groups[1].Value.Contains("<p"))
+                    {
+
+                        MatchCollection matches2 = Regex.Matches(match.Groups[1].Value, @"<p.*?>(.*?)</p>");
+                        foreach (Match match2 in matches2)
+                        {
+                            if (match2.Groups[1].Value.Contains("<br />"))
+                            {
+                                list.AddRange(match2.Groups[1].Value.Split(new string[] { "<br />" }, StringSplitOptions.None).ToList());
+                            }
+                            else
+                                list.Add(match2.Groups[1].Value);
+                        }
+                    }
+                    else
+                    {
+                        if (match.Groups[1].Value.Contains("<br />"))
+                        {
+                            list.AddRange(match.Groups[1].Value.Split(new string[] { "<br />" }, StringSplitOptions.None).ToList());
+                        }
+                        else
+                            list.Add(match.Groups[1].Value);
+                    }
+                }
+            }
+            else if (item.Contains("<p"))
+            {
+                MatchCollection matches = Regex.Matches(item, @"<p.*?>(.*?)</p>");
+                foreach (Match match in matches)
+                {
+                    if (match.Groups[1].Value.Contains("<br />"))
+                    {
+                        list.AddRange(match.Groups[1].Value.Split(new string[] { "<br />" }, StringSplitOptions.None).ToList());
+                    }
+                    else
+                        list.Add(match.Groups[1].Value);
+                }
+            }
+            else if (item.Contains("\r\n"))
+            {
+                list = item.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            }
+            else if (item.Contains("<br />"))
+            {
+                list = item.Split(new string[] { "<br />" }, StringSplitOptions.None).ToList();
+            }
+            else
+                list.Add(item);
+
+            list.ForEach(i => i = i.EndsWith("<br>") ? i.Replace("<br>", "") : i);
+
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i] = list[i].EndsWith("<br>") ? list[i].Replace("<br>", "") : list[i];
+            }
+
+            list.RemoveAll(l => string.IsNullOrEmpty(l) || l.Equals("<br />") || l.Equals("<br>") || string.IsNullOrWhiteSpace(l));
+
+            //foreach (var str in list)
+            //{
+            //    if (str.Contains("<") || str.Contains("\r\n") || str.Contains("/>"))
+            //        _ = item;
+            //}
+            return list;
+        }
+
+        private void VerifyFields(List<ExportProductTranslation> translations)
+        {
+            foreach (var trans in translations)
+            {
+                if (trans.Requirements.Any())
+                {
+                    foreach (var item in trans.Requirements)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.Requirements;
+                        else
+                            _ = trans.Requirements;
+                    }
+                }
+
+                if (trans.WhatIsIncluded.Any())
+                {
+                    foreach (var item in trans.WhatIsIncluded)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.WhatIsIncluded;
+                        else
+                            _ = trans.WhatIsIncluded;
+                    }
+                }
+
+                if (trans.WhatIsNotIncluded.Any())
+                {
+                    foreach (var item in trans.WhatIsNotIncluded)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.WhatIsNotIncluded;
+                        else
+                            _ = trans.WhatIsNotIncluded;
+                    }
+                }
+
+                if (trans.Duration.HasValue)
+                {
+                    _ = trans.Duration;
+                }
+
+                if (!string.IsNullOrEmpty(trans.AgeLimit))
+                {
+                    if (trans.AgeLimit.Contains("<") && trans.AgeLimit.Contains(">"))
+                        _ = trans.AgeLimit;
+                    else
+                        _ = trans.AgeLimit;
+                }
+
+                if (trans.Directions.Any())
+                {
+                    foreach (var item in trans.Directions)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.Directions;
+                        else
+                            _ = trans.Directions;
+                    }
+                }
+
+                if (trans.GuideLanguages.Any())
+                {
+                    foreach (var item in trans.GuideLanguages)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.GuideLanguages;
+                        else
+                            _ = trans.GuideLanguages;
+                    }
+                }
+
+                if (trans.WhatToBring.Any())
+                {
+                    foreach (var item in trans.WhatToBring)
+                    {
+                        if (item.Contains("<ul>") || item.Contains("<p>") || item.Contains("\r\n"))
+                            _ = trans.WhatToBring;
+                        else
+                            _ = trans.WhatToBring;
+                    }
+                }
+            }
+
+        }
+
+        private async Task<ProductSearchResponse>  CallProductSearch(ProductSearchRequest request, Uri uri, string culture, AuthorizationConfig authorizationConfig, TimeSpan? timeout, CancellationToken cancellationToken)
+        {
+            string jsonMessage = JsonConvert.SerializeObject(request);
+            StringContent content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
+            Dictionary<string, List<string>> headers = HttpClientHelpers.CreateHeaders(uri, HttpMethod.Get, culture, authorizationConfig, cancellationToken);
+
+            try
+            {
+                return await MakePostCall<ProductSearchResponse>(uri, headers, content, authorizationConfig, timeout, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return new ProductSearchResponse
+                {
+                    IsError = true,
+                    Message = ex.Message,
+                    Status = StatusCodes.Status400BadRequest
+                };
+            }
+        }
+
+        private async Task<T> MakePostCall<T>(Uri uri, Dictionary<string, List<string>> headers, StringContent content, AuthorizationConfig authorizationConfig, TimeSpan? timeout, CancellationToken cancellationToken) where T : ErrorResponse
+        {
+            HttpResponseMessage response;
+            int statusCode = 0;
+            string responseBody;
+
+            try
+            {
+                response = await _client.PostAsync(uri, content, headers, timeout, cancellationToken);
+                statusCode = (int)response.StatusCode;
+
+                responseBody = await HttpClientHelpers.GetBody(response);
+            }
+            catch (Exception ex)
+            {
+                statusCode = statusCode != 0 ? statusCode : StatusCodes.Status500InternalServerError;
+
+                var errorMessage = $"GalaxyAPI returned an exception. StatusCode: {statusCode}.";
+                _logger.LogError(ex, errorMessage);
+
+                throw new Exception(errorMessage, ex);
+            }
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                try
+                {
+                    T errorResponse = JsonConvert.DeserializeObject<T>(responseBody);
+                    errorResponse.IsError = true;
+
+                    string errorMessage = $"The call to GalaxyAPI failed. Status code: {response.StatusCode}. Status: {errorResponse.Status}. Message: {errorResponse.Message}.";
+                    _logger.LogError(errorMessage);
+
+                    return errorResponse;
+                }
+                catch (Exception ex)
+                {
+                    using (_logger.BeginScope(new Dictionary<string, object>
+                    {
+                        ["ResponseBody"] = responseBody,
+                    }))
+                    {
+                        string errorMessage = $"An excpetion was thrown when parsing the error response from GalaxyAPI.";
+                        _logger.LogError(ex, errorMessage);
+                        throw new Exception(errorMessage, ex);
+                    }
+                }
+            }
+
+            T result;
+            try
+            {
+                result = JsonConvert.DeserializeObject<T>(responseBody);
+            }
+            catch (Exception ex)
+            {
+                using (_logger.BeginScope(new Dictionary<string, object>
+                {
+                    ["ResponseBody"] = responseBody,
+                }))
+                {
+                    var errorMessage = $"An excpetion was thrown when parsing the response from GalaxyAPI.";
+                    _logger.LogError(ex, errorMessage);
+                    throw new Exception(errorMessage, ex);
+                }
+            }
+
+            if (result == null)
+            {
+                var _errorMessage = $"Product result from GalaxyAPI system was null.";
+                _logger.LogError(_errorMessage);
+                throw new Exception(_errorMessage);
+            }
+
+            return result;
+        }
+
+        private ProductResponse CreateProductResponse(ProductSearchResponse result, ProductServiceMessage request, string language, ulong page, int pageSize, bool includeAttributes)
+        {
+            if (result == null)
+                return new ProductResponse
+                {
+                    Error = true,
+                    ErrorMessage = "No response from GalaxyAPI.",
+                    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status400BadRequest, ErrorCode.RequestError, "No response from GalaxyAPI.")
+                };
+
+            if (result.IsError || (!result.Items?.Any() ?? true))
+            {
+                string message = string.IsNullOrEmpty(result.Message)
+                    ? "Unknown error from GalaxyAPI." : result.Message;
+
+                return new ProductResponse
+                {
+                    Error = true,
+                    ErrorMessage = message,
+                    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status400BadRequest, ErrorCode.RequestError, message)
+                };
+            }
+
+            // Calculate the next page number, if any.
+            string nextPage = null;
+            ulong pageCount = (ulong)Math.Ceiling(result.TotalResults / (decimal)pageSize);
+
+            if (pageCount > page)
+                nextPage = (page + 1).ToString();
+
+            ProductResponse response = new ProductResponse
+            {
+                Page = page.ToString(),
+                NextPage = nextPage
+            };
+
+            List<ProductItem> products = new List<ProductItem>();
+
+            try
+            {
+                foreach (var item in result.Items)
+                {
+                    products.Add(MapItem(item, request, language, includeAttributes));
+                    foreach (var childItem in item.Children)
+                    {
+                        products.Add(MapItem(childItem, request, language, includeAttributes));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new ProductResponse
+                {
+                    Error = true,
+                    ErrorMessage = ex.Message,
+                    ProblemDetails = new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError, ErrorCode.ConfigurationError, ex.Message),
+                };
+            }
+
+            response.Products = products;
+            return response;
+        }
+
+        private ProductItem MapItem(ProductResponseItem item, ProductServiceMessage request, string language, bool includeAttributes)
+        {
+            ProductResponseContent content = item.Content;
+
+            return MapItem(item.Id, content, request, language, includeAttributes);
+        }
+
+        private ProductItem MapItem(ProductResponseChild item, ProductServiceMessage request, string language, bool includeAttributes)
+        {
+            ProductResponseContent content = item.Content;
+
+            return MapItem(item.Id, content, request, language, includeAttributes);
+        }
+
+        private ProductItem MapItem(string productId, ProductResponseContent content, ProductServiceMessage request, string language, bool includeAttributes)
+        {
+            string introduction = content.Information?.FirstOrDefault(c => c.Id == 101)?.Value;
+            string summary = content.Information?.FirstOrDefault(c => c.Id == 102)?.Value;
+            var guideLanguages = GetLanguages(content.Information);
+            string countryName = GetCountryName(content.Information?.FirstOrDefault(c => c.Name == "Country (address)")?.Value);
+
+            ExportProductTranslation translation = new ExportProductTranslation
+            {
+                Language = language.Equals("en-US",StringComparison.InvariantCultureIgnoreCase) ? "en" : language,
+                CountryName = countryName,
+                Location = null,
+                Property = null,
+                Provider = content.Categories?.FirstOrDefault(c => c.Id == 36156)?.Path,
+                Name = content.Information?.FirstOrDefault(c => c.Id == 99).Value,
+                Description = $"{introduction}\r\n{summary}".Trim(),
+                AgeLimit = content.Information?.FirstOrDefault(c => c.Id == 127)?.Value,
+                Attention = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 644)?.Value),
+                City = content.Information?.FirstOrDefault(c => c.Id == 121)?.Value,
+                Directions = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 103)?.Value),
+                GuideLanguages = guideLanguages,
+                MeetingPoints = new List<string> { content.Information.FirstOrDefault(c => c.Id == 1051)?.Value },
+                Requirements = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 643)?.Value),
+
+                //PriceFrom = content.Information.FirstOrDefault(c => c.Id == 1012)?.Value,
+                //Currency = content.Information.FirstOrDefault(c => c.Id == 402)?.Value,
+                //PriceMetric= content.Information.FirstOrDefault(c => c.Id == 415)?.Value,
+                Duration = ConvertToHours(content.Information.FirstOrDefault(c => c.Id == 929)?.Value),
+                Overview = content.Information.FirstOrDefault(c => c.Id == 101)?.Value,
+                WhatIsIncluded = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 641)?.Value),
+                WhatIsNotIncluded = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 1074)?.Value),
+                WhatToBring = ConvertToStringList(content.Information.FirstOrDefault(c => c.Id == 642)?.Value),
+
+                AvailableFrom = null,// Existing occasions in the products page. But their API does not support
+                AvailableTo = null,// Existing occasions in the products page. But their API does not support
+                StartTimes = new(),// Existing occasions in the products page. But their API does not support
+
+                Images = content.Images.Select(c => new ExportProductImage
+                {
+                    Caption = c.Description,
+                    Ordinal = null,
+                    IsMain = c.IsMain,
+                    Sizes = new List<ExportProductImageSize> { new ExportProductImageSize
+                    {
+                        Url = "https:" + c.Uri
+                    } }
+                }).ToList(),
+                //CancellationPolicies = GetCancellationPoliciesNew(content.Information)
+
+            };
+
+            ProductItem productItem = new ProductItem
+            {
+                CommerceFulfillmentSchemaId = request.CommerceFulfillmentSchemaId,
+                CommerceExternalId = productId,
+                Created = null,
+                Updated = null,
+                CountryCode = null, // TODO: See if we can find this somewhere.
+                PropertyCode = null,
+                ProductCode = productId,
+                Latitude = content.Position?.Latitude,
+                Longitude = content.Position?.Longitude,
+                MinPax = null,// Not in the products page & their API does not support
+                MaxPax = null,// Not in the products page & their API does not support
+                Translations = new List<ExportProductTranslation> { translation },
+                ProductType = "Child", //Specify the product is Parent or Child. For Activities, it is Child
+                ProductSource = "Activity", //This specify the main source, ie the Category the product belongs to. Eg: Activity,Accommodation
+            };
+
+            //VerifyFields(productItem.Translations);
+            if (includeAttributes)
+            {
+                List<EntityAttribute> attributes = new List<EntityAttribute>
+                {
+                    new EntityAttribute
+                    {
+                        Name = "OVERVIEW",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Introduksjon")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "DESCRIPTION",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Beskrivelse")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "LANGUAGE",
+                        Value = language
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "POINT_OF_SALES_ID",
+                        Value = EntityAttributeHelper.GetAttributeValueAsList(request.SearchAttributes, "POINTOFSALESID").FirstOrDefault()
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "CURRENCY",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Valuta")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "SUPPLIER_PRODUCT_ID",
+                        Value = productId
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "WHAT_TO_BRING",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "What is not included")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "GUIDE_LANGUAGES",
+                        Value = string.Join(",", guideLanguages)
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "DURATION",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Duration")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "MEETING_POINT",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Meeting point")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "DIRECTIONS",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Veibeskrivelse")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "PRICE_TYPE",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Prisbeskrivning")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "UPDATED",
+                        Value = DateTime.Now.ToString()
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "COUNTRY_CODE",
+                        // Note that this returns a three digit code which is
+                        // not pre-defined anywhere that I can see.
+                        Value = content.Information.SingleOrDefault(c => c.Name == "Country (address)")?.Value
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "COUNTRY_NAME",
+                        Value = countryName
+                    },
+                    new EntityAttribute
+                    {
+                        Name = "LOCATION",
+                        Value = content.Information.SingleOrDefault(c => c.Name == "City (address)")?.Value
+                    }
+                };
+
+                // Get cancellation policies.
+                if (content.Information.Any(c => c.Id == 112))
+                    attributes.AddRange(GetCancellationPolicies(content.Information));
+
+                productItem.ProductAttributes = attributes
+                    .Where(c => !string.IsNullOrEmpty(c.Value))
+                    .ToList();
+            }
+
+            return productItem;
+        }
+
+        private List<string> GetLanguages(List<ProductResponseInformation> information)
+        {
+            bool svensk = information.Any(c => c.Name == "Svensk" && c.Value == "True");
+            bool engelsk = information.Any(c => c.Name == "Engelsk" && c.Value == "True");
+            bool tysk = information.Any(c => c.Name == "Tysk" && c.Value == "True");
+            bool fransk = information.Any(c => c.Name == "Fransk" && c.Value == "True");
+            bool spansk = information.Any(c => c.Name == "Spansk" && c.Value == "True");
+            bool norsk = information.Any(c => c.Name == "Norsk" && c.Value == "True");
+            bool finsk = information.Any(c => c.Name == "Finsk" && c.Value == "True");
+            bool kinesisk = information.Any(c => c.Name == "Kinesisk" && c.Value == "True");
+            bool russisk = information.Any(c => c.Name == "Russisk" && c.Value == "True");
+            bool dansk = information.Any(c => c.Name == "Dansk" && c.Value == "True");
+
+            List<string> languages = new();
+            if (svensk) languages.Add("Swedish");
+            if (engelsk) languages.Add("English");
+            if (tysk) languages.Add("German");
+            if (spansk) languages.Add("Spanish");
+            if (norsk) languages.Add("Norwegian");
+            if (finsk) languages.Add("Finnish");
+            if (kinesisk) languages.Add("Chinese");
+            if (russisk) languages.Add("Russian");
+            if (dansk) languages.Add("Danish");
+
+            return languages;
+        }
+
+        public List<CancellationPolicy> GetCancellationPoliciesNew(List<ProductResponseInformation> information)
+        {
+            string cancellationPolicy = information?.FirstOrDefault(c => c.Id == 112)?.Value; // "Full refund if canceled 7 days or more before departure"
+
+            List<CancellationPolicy> policyList = new List<CancellationPolicy>();
+            if (string.IsNullOrEmpty(cancellationPolicy))
+                return policyList;
+
+            var lines = cancellationPolicy.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+            foreach (var line in lines.Where(l => !string.IsNullOrEmpty(l)))
+            {
+                double percentage = 0;
+                int upperLimitDuration = 0;
+                int lowerLimitDuration = 0;
+                double upperLimitDurationInDays = 0;
+                double lowerLimitDurationInDays = 0;
+                bool isLessThan = false;
+                string unit = string.Empty;
+                string units = string.Empty;
+
+
+                CancellationPolicy policy = null;
+                try
+                {
+                    var match = Regex.Match(line, @"(\d+)%");
+                    if (match.Success && match.Groups[1] != null)
+                        percentage = 100 - Convert.ToDouble(match.Groups[1].Value);
+
+                    if (line.Contains("Full refund", StringComparison.InvariantCultureIgnoreCase) || line.Contains("Free cancellation", StringComparison.InvariantCultureIgnoreCase))
+                        percentage = 0;
+
+                    if (line.Contains("no refund", StringComparison.InvariantCultureIgnoreCase) || line.Contains("Cancellation fee of 100 %", StringComparison.InvariantCultureIgnoreCase)
+                        || line.Contains("Cancellation fee of 100%", StringComparison.InvariantCultureIgnoreCase))
+                        percentage = 100;
+
+                    isLessThan = line.Contains("less", StringComparison.InvariantCultureIgnoreCase);
+
+                    match = Regex.Match(line, @"(\d+)\s+days");
+                    if (match.Success && match.Groups[1] != null)
+                    {
+                        unit = "days";
+                        if (!isLessThan)
+                        {
+                            lowerLimitDurationInDays = lowerLimitDuration = Convert.ToInt32(match.Groups[1].Value);
+                        }
+
+                        else
+                        {
+                            upperLimitDurationInDays = upperLimitDuration = Convert.ToInt32(match.Groups[1].Value);
+                        }
+                    }
+
+                    match = Regex.Match(line, @"(\d+)\s+hours");
+                    if (match.Success && match.Groups[1] != null)
+                    {
+                        unit = "hours";
+                        if (!isLessThan)
+                        {
+                            lowerLimitDuration = Convert.ToInt32(match.Groups[1].Value);
+                            lowerLimitDurationInDays = lowerLimitDuration / 24;
+                        }
+                        else
+                        {
+                            upperLimitDuration = Convert.ToInt32(match.Groups[1].Value);
+                            upperLimitDurationInDays = upperLimitDuration / 24;
+                        }
+                    }
+
+                }
+                catch
+                {
+                    percentage = 0;
+                    units = string.Empty;
+                }
+                finally
+                {
+                    policy = new CancellationPolicy
+                    {
+                        Unit = unit,
+                        UpperLimitDuration = upperLimitDuration,
+                        UpperLimitDurationInDays = upperLimitDurationInDays,
+                        LowerLimitDuration = lowerLimitDuration,
+                        LowerLimitDurationInDays = lowerLimitDurationInDays,
+                        Percentage = percentage,
+                        FullDescription = line,
+                        PercentageText = $"{percentage}%",
+                    };
+                }
+
+                if (policy != null)
+                    policyList.Add(policy);
+            }
+
+            return SortCancellationPolicies(policyList);
+        }
+
+        private List<CancellationPolicy> SortCancellationPolicies(List<CancellationPolicy> cancellationPolicies)
+        {
+            if (!cancellationPolicies.Any())
+                return cancellationPolicies;
+
+            int index = 0;
+            int? lastValue = int.MaxValue;
+
+            var policiesWithLowerLimit = cancellationPolicies.Where(c => c.LowerLimitDurationInDays > 0 && c.UpperLimitDurationInDays == 0)
+                .OrderByDescending(c => c.LowerLimitDurationInDays).ToList();
+
+            string lastUnit = policiesWithLowerLimit.Any() ? policiesWithLowerLimit.First().Unit : string.Empty;
+
+            foreach (var policy in policiesWithLowerLimit)
+            {
+                index = index + 1;
+                policy.Index = index;
+
+                if (policy.Unit.Equals("hours"))
+                {
+                    if (lastUnit.Equals("Days"))
+                    {
+                        policy.UpperLimitDuration = lastValue * 24;
+                        policy.UpperLimitDurationInDays = lastValue;
+                    }
+                    else
+                    {
+                        policy.UpperLimitDuration = lastValue;
+                        policy.UpperLimitDurationInDays = lastValue / 24;
+                    }
+                }
+                else
+                {
+                    if (lastUnit.Equals("hours"))
+                    {
+                        policy.UpperLimitDuration = lastValue / 24;
+                        policy.UpperLimitDurationInDays = lastValue / 24;
+                    }
+                    else
+                    {
+                        policy.UpperLimitDuration = lastValue;
+                        policy.UpperLimitDurationInDays = lastValue;
+                    }
+                }
+
+                policy.UpperLimitDurationText = policy.UpperLimitDuration == int.MaxValue ? string.Empty : $"{policy.UpperLimitDuration} {policy.Unit}";
+                policy.LowerLimitDurationText = $"{policy.LowerLimitDuration} {policy.Unit}";
+
+                lastValue = policy.LowerLimitDuration;
+                lastUnit = policy.Unit;
+
+                if (policy.UpperLimitDuration.Value == int.MaxValue)
+                    policy.UpperLimitDuration = null;
+            }
+
+            var policiesWithUpperLimit = cancellationPolicies.Where(c => c.UpperLimitDurationInDays > 0 && c.LowerLimitDurationInDays == 0)
+                .OrderByDescending(c => c.UpperLimitDurationInDays).ToList();
+
+            if (lastUnit == string.Empty)
+                lastUnit = policiesWithUpperLimit.Any() ? policiesWithUpperLimit.First().Unit : string.Empty;
+            foreach (var policy in policiesWithUpperLimit)
+            {
+                index = index + 1;
+                policy.Index = index;
+
+
+                var lastValueInDays = lastUnit.Equals("hours") ? lastValue / 24 : lastValue;
+                if (lastValueInDays == policy.UpperLimitDurationInDays)
+                    lastValue = 0;
+
+                if (policy.Unit.Equals("hours"))
+                {
+                    if (lastUnit.Equals("Days"))
+                    {
+                        policy.LowerLimitDuration = lastValue * 24;
+                        policy.LowerLimitDurationInDays = lastValue;
+                    }
+                    else
+                    {
+                        policy.LowerLimitDuration = lastValue;
+                        policy.LowerLimitDurationInDays = lastValue / 24;
+                    }
+                }
+                else
+                {
+                    if (lastUnit.Equals("hours"))
+                    {
+                        policy.LowerLimitDuration = lastValue / 24;
+                        policy.LowerLimitDurationInDays = lastValue / 24;
+                    }
+                    else
+                    {
+                        policy.LowerLimitDuration = lastValue;
+                        policy.LowerLimitDurationInDays = lastValue;
+                    }
+                }
+
+                policy.UpperLimitDurationText = $"{policy.UpperLimitDuration} {policy.Unit}";
+                policy.LowerLimitDurationText = $"{policy.LowerLimitDuration} {policy.Unit}";
+
+                lastValue = policy.UpperLimitDuration;
+
+                if (policy.UpperLimitDuration.Value == int.MaxValue)
+                    policy.UpperLimitDuration = null;
+            }
+
+            List<CancellationPolicy> sortedPolicyList = cancellationPolicies.OrderBy(c => c.Index).ToList();
+
+            if (sortedPolicyList.Count == 1 && sortedPolicyList.FirstOrDefault().Percentage == 100)
+            {
+                var policy = sortedPolicyList.FirstOrDefault();
+                policy.Percentage = 0;
+                policy.PercentageText = "0%";
+                var upperLimitation = policy.UpperLimitDuration;
+                var lowerLimitation = policy.LowerLimitDuration;
+
+                policy.UpperLimitDuration = null;
+                policy.LowerLimitDuration = upperLimitation;
+                policy.UpperLimitDurationText = $"{policy.UpperLimitDuration} {policy.Unit}";
+                policy.LowerLimitDurationText = $"{policy.LowerLimitDuration} {policy.Unit}";
+
+            }
+            else if (sortedPolicyList.Count == 2)
+            {
+                var noRefundExists = sortedPolicyList.Any(s => s.Percentage == 100);
+                var fullRefundExists = sortedPolicyList.Any(s => s.Percentage == 0);
+                if (noRefundExists && fullRefundExists)
+                {
+                    sortedPolicyList.Remove(sortedPolicyList.FirstOrDefault(s => s.Percentage == 100));
+                }
+            }
+
+            return sortedPolicyList;
+        }
+
+        /// <summary>
+        /// Gets cancellation policies from product responses.
+        /// </summary>
+        /// <remarks>
+        /// Attempts to parse the policies for grouping and for
+        /// presenting a uniform listing.
+        /// </remarks>
+        /// <param name="information"></param>
+        /// <returns>A list of cancellation policy attributes.</returns>
+        private List<EntityAttribute> GetCancellationPolicies(List<ProductResponseInformation> information)
+        {
+            string policyValue = information.Single(c => c.Id == 112).Value;
+            List<string> policies = policyValue.Split("\r\n").ToList();
+
+            List<EntityAttribute> policyAttributes = new List<EntityAttribute>();
+
+            foreach (var policy in policies)
+            {
+                int hourThreshold;
+                string percentageValue;
+
+                if (policy.Contains("hours") || policy.Contains("timer"))
+                    (hourThreshold, percentageValue) = ParseFromHours(policy);
+                else if (policy.Contains("days") || policy.Contains("dager"))
+                    (hourThreshold, percentageValue) = ParseFromDays(policy);
+                else
+                {
+                    hourThreshold = 0;
+                    percentageValue = string.Empty;
+                }
+
+                string attribute;
+                if (hourThreshold >= 168)
+                    attribute = ProductAttributeNames.CANCELLATION_168H;
+                if (hourThreshold >= 72 && hourThreshold < 168)
+                    attribute = ProductAttributeNames.CANCELLATION_72H;
+                if (hourThreshold >= 48 && hourThreshold < 72)
+                    attribute = ProductAttributeNames.CANCELLATION_48H;
+                if (hourThreshold >= 24 && hourThreshold < 48)
+                    attribute = ProductAttributeNames.CANCELLATION_24H;
+                else
+                    attribute = ProductAttributeNames.CANCELLATION_0H;
+
+                percentageValue = percentageValue.Replace(" ", "");
+
+                policyAttributes.Add(new EntityAttribute
+                {
+                    Name = attribute,
+                    Value = string.IsNullOrEmpty(percentageValue) ? policy : $"{percentageValue}: {policy}"
+                }); ;
+            }
+
+            policyAttributes = policyAttributes
+                .GroupBy(c => c.Name)
+                .Select(c => new EntityAttribute(c.Key, string.Join("\r\n", c.Select(c => c.Value))))
+                .ToList();
+
+            return policyAttributes;
+        }
+
+        private (int, string) ParseFromHours(string policy)
+        {
+            (List<int> timeThresholds, string percentage) = GetValues(policy);
+
+            return timeThresholds.Any() ? (timeThresholds.Min(), percentage) : (0, percentage);
+        }
+
+        private (int, string) ParseFromDays(string policy)
+        {
+            (List<int> timeThresholds, string percentage) = GetValues(policy);
+
+            return timeThresholds.Any() ? ((timeThresholds.Min() * 24), percentage) : (0, percentage);
+        }
+
+        private (List<int>, string) GetValues(string policy)
+        {
+            MatchCollection matches = Regex.Matches(policy, @"\d+\s*%?");
+
+            List<int> numbers = new List<int>();
+            string percentage = string.Empty;
+
+            foreach (Match match in matches)
+                foreach (Capture capture in match.Captures)
+                    if (match.Value.Contains('%'))
+                        percentage = match.Value;
+                    else
+                        numbers.Add(int.Parse(match.Value));
+
+            return (numbers, percentage);
+        }
+
+        private string GetCountryName(string id)
+        {
+            CountryService countryService = new CountryService();
+            var country = countryService.Countries.FirstOrDefault(c => c.Key.Equals(id));
+
+            return country.Value ?? string.Empty;
+        }
+
+        private static double? ConvertToHours(string time)
+        {
+            if (string.IsNullOrEmpty(time))
+                return null;
+
+            if (time.Contains(" each way", StringComparison.InvariantCultureIgnoreCase))
+            {
+                time = time.Replace(" each way", "");
+            }
+
+            string[] parts = time.Split(' ');
+            double? convertedHours = 0;
+            switch (parts.Length)
+            {
+                case 2 when parts[1] == "time":
+                case 2 when parts[1] == "hour":
+                    convertedHours = double.Parse(parts[0]);
+                    break;
+                case 2:
+                {
+                    if (parts[1] == "minutes")
+                    {
+                        convertedHours = double.Parse(parts[0]) / 60;
+                    }
+
+                    break;
+                }
+                case 4:
+                {
+                    if ((parts[1] == "hour" && parts[3] == "minutes") || (parts[1] == "hours" && parts[3] == "minutes"))
+                    {
+                        double hours = double.Parse(parts[0]);
+                        double minutes = double.Parse(parts[2]);
+
+                        convertedHours = hours + (minutes / 60);
+                    }
+
+                    break;
+                }
+                case 5:
+                {
+                    if ((parts[1] == "hour" && parts[4] == "minutes") || (parts[1] == "hours" && parts[4] == "minutes"))
+                    {
+                        double hours = double.Parse(parts[0]);
+                        double minutes = double.Parse(parts[3]);
+
+                        convertedHours = hours + (minutes / 60);
+                    }
+
+                    break;
+                }
+                case 1:
+                {
+                    if (time.Contains(','))
+                        time = time.Replace(',', '.');
+                    if (time.EndsWith("h"))
+                    {
+                        convertedHours = double.Parse(time.Replace("h", ""));
+                    }
+                    else if (time.EndsWith("H"))
+                    {
+                        convertedHours = double.Parse(time.Replace("H", ""));
+                    }
+                    else if (time.EndsWith("d"))
+                    {
+                        convertedHours = double.Parse(time.Replace("d", "")) * 24;
+                    }
+                    else if (double.TryParse(time, out var temp))
+                    {
+                        convertedHours = temp;
+                    }
+                    else if (time.Equals("Variable", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        convertedHours = null;
+                    }
+
+                    break;
+                }
+            }
+            if (convertedHours == 0)
+                convertedHours = null;
+
+            return convertedHours;
+        }
+    }
+}

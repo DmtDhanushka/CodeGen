@@ -56,5 +56,13 @@
         }
     ]
 ";
+
+        public static readonly string ProudctServiceSpecs = @"
+    {
+        ""name"": ""Products"",
+        ""functionName"": ""GetProduct"",
+        ""productTypes"":  ""Activity"", ""Transport"", ""Accommodation"",
+    }
+";
     }
 }
